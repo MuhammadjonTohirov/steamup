@@ -191,7 +191,7 @@ class UserProfileViewSet(viewsets.ModelViewSet):
         serializer.save()
 
 class OnboardingOptionsView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.AllowAny]
     
     def get(self, request):
         # Prepare options for dropdowns

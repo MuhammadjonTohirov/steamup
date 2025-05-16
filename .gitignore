@@ -11,16 +11,12 @@ db.sqlite3-journal
 media/
 staticfiles/
 
-# Environment
-.env
-.env.*
-
 # Virtual environments
 venv/
 env/
 ENV/
 .venv/
-
+myenv/
 # VS Code
 .vscode/
 
