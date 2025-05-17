@@ -1,0 +1,43 @@
+from users.models import OTPCode
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+from django.utils import timezone
+from jsonschema import ValidationError
+from rest_framework import serializers
+
+
+from datetime import timedelta
+
+
+class OTPVerificationSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    code = serializers.CharField(max_length=6)
+    purpose = serializers.ChoiceField(choices=OTPCode.PURPOSE_CHOICES)
+
+    def validate(self, attrs):
+        email = attrs.get('email')
+        code = attrs.get('code')
+        purpose = attrs.get('purpose')
+
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            raise ValidationError("User with this email does not exist.")
+
+        # Check for valid OTP
+        otp = OTPCode.objects.filter(
+            user=user,
+            code=code,
+            purpose=purpose,
+            is_used=False,
+            created_at__gte=timezone.now() - timedelta(minutes=5)
+        ).first()
+
+        if not otp:
+            raise ValidationError("Invalid or expired OTP code.")
+
+        attrs['user'] = user
+        attrs['otp'] = otp
+        return attrs

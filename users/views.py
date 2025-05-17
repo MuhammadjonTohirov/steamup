@@ -11,13 +11,17 @@ from rest_framework.throttling import AnonRateThrottle
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
 
 from core.response import APIResponse
+from .serializers.OTPSerializer import OTPSerializer
+from .serializers.OTPVerificationSerializer import OTPVerificationSerializer
+from .serializers.PasswordResetSerializer import PasswordResetSerializer
+from .serializers.LearningDomainSerializer import LearningDomainSerializer
+from .serializers.UserProfileSerializer import UserProfileSerializer
+from .serializers.CustomTokenObtainPairSerializer import CustomTokenObtainPairSerializer
+from users.serializers import AppConfigSerializer, OnboardingOptionsSerializer
 from .models import OTPCode, UserProfile, LearningDomain, AppConfig
 from core.token_views import CustomTokenObtainPairView
-from .serializers import (
-    UserRegistrationSerializer, CustomTokenObtainPairSerializer,
-    OTPSerializer, OTPVerificationSerializer, PasswordResetSerializer,
-    UserProfileSerializer, LearningDomainSerializer, OnboardingOptionsSerializer,
-    AppConfigSerializer
+from .serializers.UserRegistrationSerializer import (
+    UserRegistrationSerializer
 )
 
 User = get_user_model()
