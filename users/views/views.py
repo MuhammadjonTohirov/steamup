@@ -1,98 +1,46 @@
 from django.contrib.auth import get_user_model
-from django.core.mail import EmailMessage
-from django.conf import settings
-from django.template.loader import render_to_string
+from django.utils.translation import gettext_lazy as _
 
 from rest_framework import viewsets, status, permissions
 from rest_framework.decorators import action
 from rest_framework.views import APIView
-from rest_framework.throttling import AnonRateThrottle
 
-from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
+from drf_spectacular.utils import extend_schema
 
+from core.models import AppConfig
 from core.response import APIResponse
-from .serializers.OTPSerializer import OTPSerializer
-from .serializers.OTPVerificationSerializer import OTPVerificationSerializer
-from .serializers.PasswordResetSerializer import PasswordResetSerializer
-from .serializers.LearningDomainSerializer import LearningDomainSerializer
-from .serializers.UserProfileSerializer import UserProfileSerializer
-from .serializers.CustomTokenObtainPairSerializer import CustomTokenObtainPairSerializer
-from users.serializers import AppConfigSerializer, OnboardingOptionsSerializer
-from .models import OTPCode, UserProfile, LearningDomain, AppConfig
-from core.token_views import CustomTokenObtainPairView
-from .serializers.UserRegistrationSerializer import (
-    UserRegistrationSerializer
-)
+from core.serializers.AppConfigSerializer import AppConfigSerializer
+from ..serializers.OTPSerializer import OTPSerializer
+from ..serializers.OTPVerificationSerializer import OTPVerificationSerializer
+from ..serializers.PasswordResetSerializer import PasswordResetSerializer
+from ..serializers.LearningDomainSerializer import LearningDomainSerializer
+from ..serializers.UserProfileSerializer import UserProfileSerializer
+from ..serializers.CustomTokenObtainPairSerializer import CustomTokenObtainPairSerializer
+from users.serializers import OnboardingOptionsSerializer
+from ..models import UserProfile, LearningDomain
 
 User = get_user_model()
 
+from django.utils.translation import gettext as _
+from django.contrib.auth import get_user_model
+from rest_framework import viewsets, status, permissions
+from rest_framework.decorators import action
+from drf_spectacular.utils import extend_schema
+
+from core.response import APIResponse
+from core.utils import get_email_templates
+from django.core.mail import EmailMessage
+from django.conf import settings
+
+from ..serializers.OTPSerializer import OTPSerializer
+from ..serializers.OTPVerificationSerializer import OTPVerificationSerializer
+from ..serializers.PasswordResetSerializer import PasswordResetSerializer
+from ..serializers.UserRegistrationSerializer import UserRegistrationSerializer
+from ..serializers.CustomTokenObtainPairSerializer import CustomTokenObtainPairSerializer
+
+User = get_user_model()
 
 class AuthViewSet(viewsets.GenericViewSet):
-    throttle_classes = [AnonRateThrottle]
-    
-    @extend_schema(
-        request=UserRegistrationSerializer,
-        responses={201: UserRegistrationSerializer},
-    )
-    @action(detail=False, methods=['post'], permission_classes=[permissions.AllowAny])
-    def register(self, request):
-        serializer = UserRegistrationSerializer(data=request.data)
-        if serializer.is_valid():
-            user = serializer.save()
-            
-            # Generate JWT token
-            token_serializer = CustomTokenObtainPairSerializer(data={
-                'email': request.data['email'],
-                'password': request.data['password']
-            })
-            token_serializer.is_valid(raise_exception=True)
-            
-            return APIResponse(
-                data={
-                    'user': serializer.data,
-                    'token': token_serializer.validated_data
-                },
-                code=status.HTTP_201_CREATED
-            )
-        return APIResponse(error=serializer.errors, code=status.HTTP_400_BAD_REQUEST)
-    
-    @extend_schema(
-        request=OTPSerializer,
-        responses={200: {'message': 'string'}}
-    )
-    @action(detail=False, methods=['post'], permission_classes=[permissions.AllowAny])
-    def request_otp(self, request):
-        serializer = OTPSerializer(data=request.data)
-        if serializer.is_valid():
-            otp = serializer.save()
-            
-            # Send email with OTP
-            purpose_text = "email verification" if otp.purpose == "verify" else "password reset"
-            email_subject = f"SteamUp - Your OTP for {purpose_text}"
-            email_body = f"""
-            Hello,
-            
-            Your one-time password (OTP) for {purpose_text} is: {otp.code}
-            
-            This OTP will expire in 5 minutes.
-            
-            Best regards,
-            The SteamUp Team
-            """
-            
-            try:
-                email = EmailMessage(
-                    email_subject,
-                    email_body,
-                    settings.EMAIL_HOST_USER,
-                    [otp.user.email]
-                )
-                email.send()
-                return APIResponse(data={"message": f"OTP sent to {otp.user.email}"})
-            except Exception as e:
-                return APIResponse(error=str(e), code=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
-        return APIResponse(error=serializer.errors, code=status.HTTP_400_BAD_REQUEST)
     
     @extend_schema(
         request=OTPVerificationSerializer,
@@ -114,9 +62,9 @@ class AuthViewSet(viewsets.GenericViewSet):
             if purpose == 'verify':
                 user.is_verified = True
                 user.save()
-                return APIResponse(data={"message": "Email verified successfully."})
+                return APIResponse(data={"message": _("Email verified successfully.")})
             else:
-                return APIResponse(data={"message": "OTP verified successfully."})
+                return APIResponse(data={"message": _("OTP verified successfully.")})
         
         return APIResponse(error=serializer.errors, code=status.HTTP_400_BAD_REQUEST)
     
@@ -149,9 +97,9 @@ class AuthViewSet(viewsets.GenericViewSet):
         serializer = PasswordResetSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return APIResponse(data={"message": "Password reset successfully."})
+            return APIResponse(data={"message": _("Password reset successfully.")})
         return APIResponse(error=serializer.errors, code=status.HTTP_400_BAD_REQUEST)
-
+    
 class UserProfileViewSet(viewsets.ModelViewSet):
     serializer_class = UserProfileSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -200,27 +148,27 @@ class OnboardingOptionsView(APIView):
     def get(self, request):
         # Prepare options for dropdowns
         discovery_sources = [
-            {'value': choice[0], 'label': choice[1]} 
-            for choice in UserProfile.DISCOVERY_CHOICES
+            {'value': choice[0], 'label': str(choice[1])} 
+            for choice in UserProfile.DISCOVERY_SOURCES
         ]
         
         stem_levels = [
-            {'value': choice[0], 'label': choice[1]} 
+            {'value': choice[0], 'label': str(choice[1])} 
             for choice in UserProfile.STEM_LEVEL_CHOICES
         ]
         
         motivations = [
-            {'value': choice[0], 'label': choice[1]} 
+            {'value': choice[0], 'label': str(choice[1])} 
             for choice in UserProfile.MOTIVATION_CHOICES
         ]
         
         daily_goals = [
-            {'value': choice[0], 'label': choice[1]} 
+            {'value': choice[0], 'label': str(choice[1])} 
             for choice in UserProfile.DAILY_GOAL_CHOICES
         ]
         
         learning_domains = LearningDomain.objects.all()
-        learning_domains_serializer = LearningDomainSerializer(learning_domains, many=True)
+        learning_domains_serializer = LearningDomainSerializer(learning_domains, many=True, context={'request': request})
         
         data = {
             'discovery_sources': discovery_sources,
@@ -245,8 +193,8 @@ class AppConfigViewSet(viewsets.ReadOnlyModelViewSet):
         platform_name = AppConfig.objects.filter(key='platform_name').first()
         
         data = {
-            'primary_color': primary_color.value if primary_color else '#12D18E',
-            'platform_name': platform_name.value if platform_name else 'SteamUp'
+            'primary_color': primary_color.safe_translation_getter('value', any_language=True) if primary_color else '#12D18E',
+            'platform_name': platform_name.safe_translation_getter('value', any_language=True) if platform_name else 'SteamUp'
         }
         
         return APIResponse(data=data)

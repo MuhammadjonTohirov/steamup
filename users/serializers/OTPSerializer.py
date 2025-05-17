@@ -1,16 +1,14 @@
+from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
+from jsonschema import ValidationError
+from rest_framework import serializers
+import random
+from datetime import timedelta
+
 from users.models import OTPCode
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
-
-from django.utils import timezone
-from jsonschema import ValidationError
-from rest_framework import serializers
-
-
-import random
-from datetime import timedelta
-
 
 class OTPSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(write_only=True)
@@ -18,7 +16,6 @@ class OTPSerializer(serializers.ModelSerializer):
     class Meta:
         model = OTPCode
         fields = ['email', 'purpose']
-
 
     def validate(self, attrs):
         email = attrs.pop('email')
@@ -28,9 +25,9 @@ class OTPSerializer(serializers.ModelSerializer):
             user = User.objects.get(email=email)
         except User.DoesNotExist:
             if purpose == 'verify':
-                raise ValidationError("User with this email does not exist.")
+                raise ValidationError(_("User with this email does not exist."))
             else:
-                raise ValidationError("User with this email does not exist.")
+                raise ValidationError(_("User with this email does not exist."))
 
         # Check for throttling (no OTP within 60 seconds)
         recent_otp = OTPCode.objects.filter(
@@ -44,7 +41,7 @@ class OTPSerializer(serializers.ModelSerializer):
             time_passed = timezone.now() - recent_otp.created_at
             time_left = 60 - time_passed.seconds
             raise ValidationError(
-                f"Please wait {time_left} seconds before requesting another OTP."
+                _("Please wait {seconds} seconds before requesting another OTP.").format(seconds=time_left)
             )
 
         attrs['user'] = user

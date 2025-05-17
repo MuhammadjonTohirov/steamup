@@ -8,13 +8,10 @@ def create_initial_data(sender, **kwargs):
     Create initial data for the application after migrations are applied.
     This includes learning domains and app configuration.
     """
-    # Only run once after all migrations are complete
-    if sender.name != 'core':
-        return
     
     # Create initial learning domains
     LearningDomain = apps.get_model('users', 'LearningDomain')
-    AppConfig = apps.get_model('users', 'AppConfig')
+    AppConfig = apps.get_model('core', 'AppConfig')
     
     # Create learning domains if they don't exist
     domains = [

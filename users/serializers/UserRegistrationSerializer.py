@@ -1,12 +1,14 @@
+from django.utils.translation import gettext_lazy as _
 from jsonschema import ValidationError
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError as DRFValidationError
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
+
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, min_length=8, error_messages={
-        'min_length': 'Password must be at least 8 characters long'
+        'min_length': _('Password must be at least 8 characters long')
     })
     confirm_password = serializers.CharField(write_only=True)
     
@@ -17,8 +19,8 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'email': {
                 'error_messages': {
-                    'unique': 'A user with this email already exists',
-                    'invalid': 'Enter a valid email address'
+                    'unique': _('A user with this email already exists'),
+                    'invalid': _('Enter a valid email address')
                 }
             }
         }
@@ -29,7 +31,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         
         if password != confirm_password:
             # Use a simple string instead of a dictionary
-            raise ValidationError("Passwords do not match")
+            raise ValidationError(_("Passwords do not match"))
         
         return attrs
     
@@ -45,11 +47,4 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             return user
         except Exception as e:
             # Raise a simple string error
-            raise DRFValidationError(str(e))        
-
-
-
-
-
-
-
+            raise DRFValidationError(str(e))

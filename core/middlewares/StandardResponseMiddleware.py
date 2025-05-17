@@ -1,8 +1,9 @@
 import json
 from django.utils.deprecation import MiddlewareMixin
+from django.utils.translation import get_language
 from rest_framework.response import Response
 
-from .response import api_response
+from ..response import api_response
 
 class StandardResponseMiddleware(MiddlewareMixin):
     def process_response(self, request, response):
@@ -12,6 +13,9 @@ class StandardResponseMiddleware(MiddlewareMixin):
             if isinstance(response, Response):
                 # Check if the request is an authentication request
                 if request.path.startswith('/api/auth/'):
+                    # For auth requests, we still want to add the language header
+                    if 'Content-Language' not in response:
+                        response['Content-Language'] = get_language() or 'en'
                     return response  # Don't wrap the response data in the standard format for authentication requests
 
                 response_data = response.data
@@ -27,5 +31,9 @@ class StandardResponseMiddleware(MiddlewareMixin):
                     
                     # Update the response content
                     response.content = json.dumps(response.data)
+                
+                # Add language header to indicate which language was used
+                if 'Content-Language' not in response:
+                    response['Content-Language'] = get_language() or 'en'
         
         return response

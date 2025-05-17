@@ -1,8 +1,6 @@
+from django.utils.translation import gettext_lazy as _
 from users.serializers.LearningDomainSerializer import LearningDomainSerializer
-
-
 from rest_framework import serializers
-
 
 class OnboardingOptionsSerializer(serializers.Serializer):
     discovery_sources = serializers.ListField(

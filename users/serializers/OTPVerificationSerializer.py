@@ -1,15 +1,13 @@
+from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
+from jsonschema import ValidationError
+from rest_framework import serializers
+from datetime import timedelta
+
 from users.models import OTPCode
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
-
-from django.utils import timezone
-from jsonschema import ValidationError
-from rest_framework import serializers
-
-
-from datetime import timedelta
-
 
 class OTPVerificationSerializer(serializers.Serializer):
     email = serializers.EmailField()
@@ -24,7 +22,7 @@ class OTPVerificationSerializer(serializers.Serializer):
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
-            raise ValidationError("User with this email does not exist.")
+            raise ValidationError(_("User with this email does not exist."))
 
         # Check for valid OTP
         otp = OTPCode.objects.filter(
@@ -36,7 +34,7 @@ class OTPVerificationSerializer(serializers.Serializer):
         ).first()
 
         if not otp:
-            raise ValidationError("Invalid or expired OTP code.")
+            raise ValidationError(_("Invalid or expired OTP code."))
 
         attrs['user'] = user
         attrs['otp'] = otp

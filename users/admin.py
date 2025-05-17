@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
 
-from .models import User, OTPCode, LearningDomain, UserProfile, AppConfig
+from .models import User, OTPCode, LearningDomain, UserProfile
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
@@ -43,8 +43,5 @@ class UserProfileAdmin(admin.ModelAdmin):
     list_filter = ('stem_level', 'motivation', 'daily_goal')
     search_fields = ('user__email', 'full_name')
     filter_horizontal = ('interests',)
-
-@admin.register(AppConfig)
-class AppConfigAdmin(admin.ModelAdmin):
-    list_display = ('key', 'value')
-    search_fields = ('key',)
+    
+    
