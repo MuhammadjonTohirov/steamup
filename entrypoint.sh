@@ -4,7 +4,7 @@
 set -e
 
 # Check for environment variables
-FLUSH_DATABASE=${FLUSH_DATABASE:-true}
+FLUSH_DATABASE=${FLUSH_DATABASE:-flase}
 RUN_MIGRATIONS=${RUN_MIGRATIONS:-true}
 export DB_HOST=${DB_HOST:-localhost}
 export DB_PORT=${DB_PORT:-5432}
@@ -66,10 +66,10 @@ else:
 END
 
 # Run translation setup script if locales exist
-if [ -d "locale" ]; then
-    echo "Setting up translations..."
-    python scripts/setup_translations.py
-fi
+# if [ -d "locale" ]; then
+#     echo "Setting up translations..."
+#     python scripts/setup_translations.py
+# fi
 
 # Collect static files
 echo "Collecting static files..."
