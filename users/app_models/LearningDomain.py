@@ -5,7 +5,7 @@ from parler.models import TranslatableModel, TranslatedFields
 
 class LearningDomain(TranslatableModel):
     icon = models.ImageField(upload_to='icon/', null=True, blank=True)
-    name = models.CharField(max_length=100, null=True)
+    name = models.CharField(max_length=100, null=True, name='title')
 
     translations = TranslatedFields(
         name_translated=models.CharField(_("Translated name"), max_length=100, null=True, blank=True), 

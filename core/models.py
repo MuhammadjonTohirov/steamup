@@ -17,3 +17,16 @@ class AppConfig(TranslatableModel):
     def __str__(self):
         translated_value = self.safe_translation_getter('value_translated', any_language=True)
         return f"{self.key}: {translated_value or self.value or ''}"
+   
+   
+class Image(models.Model):
+    custom_key = models.CharField(max_length=255, unique=True, null=True, blank=True)
+    image = models.ImageField(upload_to='images/')
+    
+    def __str__(self):
+        return f"Image for {self.custom_key}"
+    
+    def get_image_url(self):
+        if self.image:
+            return self.image.url
+        return None

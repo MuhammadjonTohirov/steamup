@@ -1,3 +1,4 @@
+from users.app_models.LearningPeriodTarget import LearningPeriodTarget
 from users.app_models.LearningDomain import LearningDomain
 from users.app_models.LearningMotivation import LearningMotivation
 from users.app_models.UserProfile import UserProfile
@@ -9,12 +10,11 @@ from rest_framework import serializers
 class UserProfileSerializer(serializers.ModelSerializer):
     interests = serializers.PrimaryKeyRelatedField(queryset=LearningDomain.objects.all(), many=True)
     motivation = serializers.PrimaryKeyRelatedField(queryset=LearningMotivation.objects.all(), many=False)
-    
+    daily_goal = serializers.PrimaryKeyRelatedField(queryset=LearningPeriodTarget.objects.all(), many=False)
     class Meta:
         model = UserProfile
         fields = [
-            'full_name', 'age', 'interests', 'discovery_source',
-            'stem_level', 'motivation', 'daily_goal'
+            'full_name', 'age', 'interests', 'motivation', 'daily_goal'
         ]
 
     def validate(self, attrs):
@@ -23,6 +23,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         interests = validated_data.pop('interests')
         motivation = validated_data.pop('motivation', None)
+        daily_goal = validated_data.pop('daily_goal', None)
         user = self.context['request'].user
 
         # Create profile
@@ -31,7 +32,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         # Add interests
         profile.interests.set(interests)
         profile.motivation.set(motivation)
-
+        profile.daily_goal.set(daily_goal)
         return profile
 
     def update(self, instance, validated_data):

@@ -3,6 +3,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
 from parler.admin import TranslatableAdmin
 
+from users.app_models.LearningPeriodTarget import LearningPeriodTarget
 from users.app_models.LearningMotivation import LearningMotivation
 from users.app_models.UserProfile import UserProfile
 
@@ -42,16 +43,20 @@ class OTPCodeAdmin(admin.ModelAdmin):
 
 @admin.register(LearningDomain)
 class LearningDomainAdmin(TranslatableAdmin):
-    list_display = ('name', 'name_translated')
+    list_display = ('title', 'name_translated')
     
 @admin.register(LearningMotivation)    
 class LearningMotivationAdmin(TranslatableAdmin):
     list_display = ('title', 'tr_title')
-
+    
+@admin.register(LearningPeriodTarget)
+class LearningPeriodTargetAdmin(TranslatableAdmin):
+    list_display = ('__str__', 'id')
+    
 @admin.register(UserProfile)
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'full_name', 'age', 'stem_level', 'motivation', 'daily_goal')
-    list_filter = ('stem_level', 'motivation', 'daily_goal')
+    list_display = ('user', 'full_name', 'age', 'motivation', 'daily_goal')
+    list_filter = ('motivation', 'daily_goal')
     search_fields = ('user__email', 'full_name')
     filter_horizontal = ('interests',)
     

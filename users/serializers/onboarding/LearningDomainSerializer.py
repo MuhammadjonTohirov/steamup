@@ -27,6 +27,6 @@ class LearningDomainSerializer(TranslatableModelSerializer):
         
         # Add the name field with current language translation
         current_language = self.context.get('language', 'en')
-        representation['name'] = simplified_translations.get(current_language, '')
+        representation['title'] = simplified_translations.get(current_language, '')
                 
         return representation
