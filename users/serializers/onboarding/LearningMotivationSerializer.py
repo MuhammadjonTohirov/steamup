@@ -23,7 +23,7 @@ class LearningMotivationSerializer(TranslatableModelSerializer):
             simplified_translations[lang] = trans.get('tr_title', '')
         
         representation.pop('translations', None)
-        
+
         # Add the name field with current language translation
         current_language = self.context.get('language', 'en')
         representation['title'] = simplified_translations.get(current_language, '')

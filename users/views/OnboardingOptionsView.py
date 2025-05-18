@@ -1,10 +1,12 @@
 from core.response import APIResponse
 from users.app_models.LearningDomain import LearningDomain
 from users.app_models.LearningMotivation import LearningMotivation
+from users.app_models.LearningPeriodTarget import LearningPeriodTarget
 from users.app_models.UserProfile import UserProfile
-from users.serializers.LearningMotivationSerializer import LearningMotivationSerializer
-from users.serializers.OnboardingOptionsSerializer import OnboardingOptionsOutputSerializer, OnboardingOptionsSerializer
-from users.serializers.LearningDomainSerializer import LearningDomainSerializer
+from users.serializers.onboarding.LearningMotivationSerializer import LearningMotivationSerializer
+from users.serializers.onboarding.LearningPeriodTargetSerializer import LearningPeriodTargetSerializer
+from users.serializers.onboarding.OnboardingOptionsSerializer import OnboardingOptionsOutputSerializer, OnboardingOptionsSerializer
+from users.serializers.onboarding.LearningDomainSerializer import LearningDomainSerializer
 from rest_framework.views import APIView
 from django.utils.translation import get_language
 from drf_spectacular.utils import extend_schema, OpenApiParameter
@@ -27,25 +29,10 @@ class OnboardingOptionsView(APIView):
         ],
         responses=OnboardingOptionsOutputSerializer
     )
+   
     def get(self, request):
         # Get current language
         current_language = get_language() or 'en'
-        
-        # Prepare options for dropdowns
-        discovery_sources = [
-            {'value': choice[0], 'label': str(choice[1])} 
-            for choice in UserProfile.DISCOVERY_SOURCES
-        ]
-        
-        stem_levels = [
-            {'value': choice[0], 'label': str(choice[1])} 
-            for choice in UserProfile.STEM_LEVEL_CHOICES
-        ]
-        
-        daily_goals = [
-            {'value': choice[0], 'label': str(choice[1])} 
-            for choice in UserProfile.DAILY_GOAL_CHOICES
-        ]
         
         learning_domains = LearningDomain.objects.all()
         learning_domains_serializer = LearningDomainSerializer(
@@ -60,10 +47,13 @@ class OnboardingOptionsView(APIView):
             many=True, 
             context={'request': request, 'language': current_language}
         )
+        daily_goals = LearningPeriodTargetSerializer(
+            LearningPeriodTarget.objects.all(), 
+            many=True, 
+            context={'request': request, 'language': current_language}
+        ).data
         
         data = {
-            'discovery_sources': discovery_sources,
-            'stem_levels': stem_levels,
             'motivations': motivations_serializer.data,
             'daily_goals': daily_goals,
             'learning_domains': learning_domains_serializer.data
@@ -71,3 +61,9 @@ class OnboardingOptionsView(APIView):
         
         serializer = OnboardingOptionsSerializer(data)
         return APIResponse(data=serializer.data)
+    
+    def get_discovery_source(self, choice, request):
+        """
+        Get discovery sources with translations.
+        """
+        return {'id': choice[0], 'title': choice[1], 'icon': 'google_icon.png'}
