@@ -23,15 +23,6 @@ class UserProfile(models.Model):
         ('advanced', _('Advanced')),
     ]
 
-    # Motivations - make translatable
-    MOTIVATION_CHOICES = [
-        ('fun', _('Fun')),
-        ('career', _('Career')),
-        ('education', _('Education')),
-        ('growth', _('Growth')),
-        ('society', _('Society')),
-    ]
-
     # Daily goals - make translatable
     DAILY_GOAL_CHOICES = [
         (5, _('5 minutes')),
@@ -47,7 +38,9 @@ class UserProfile(models.Model):
     interests = models.ManyToManyField(LearningDomain, related_name='users')
     discovery_source = models.CharField(_('Discovery Source'), max_length=20, choices=DISCOVERY_SOURCES)
     stem_level = models.CharField(_('STEM Level'), max_length=20, choices=STEM_LEVEL_CHOICES)
-    motivation = models.CharField(_('Motivation'), max_length=20, choices=MOTIVATION_CHOICES)
+    motivation = models.OneToOneField(
+        'users.LearningMotivation', related_name='user_motivation', on_delete=models.CASCADE, null=True, blank=True
+    )
     daily_goal = models.IntegerField(_('Daily Goal'), choices=DAILY_GOAL_CHOICES)
 
     def __str__(self):

@@ -50,3 +50,23 @@ class AppConfigViewSet(viewsets.ReadOnlyModelViewSet):
         }
         
         return APIResponse(data=data)
+    
+from drf_spectacular.extensions import OpenApiSerializerFieldExtension
+from parler_rest.serializers import TranslatedFieldsField
+
+class TranslatedFieldsFieldExtension(OpenApiSerializerFieldExtension):
+    target_class = TranslatedFieldsField
+
+    def map_serializer_field(self, auto_schema, direction):
+        return {
+            'type': 'object',
+            'additionalProperties': {
+                'type': 'object',
+                'properties': {
+                    'value': {
+                        'type': 'string',
+                        'description': 'Translated value'
+                    }
+                }
+            }
+        }

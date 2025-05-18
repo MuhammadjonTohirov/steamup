@@ -75,6 +75,19 @@ fi
 echo "Collecting static files..."
 python manage.py collectstatic --noinput
 
+# create locale directory if it doesn't exist
+if [ ! -d "locale" ]; then
+    echo "Creating locale directory..."
+    mkdir locale
+fi
+# make makemeessages for uz, ru and en languages 
+
+echo "Creating message files for uz, ru and en languages..."
+django-admin makemessages -l uz -l ru -l en
+
+echo "Compileing message files"
+django-admin compilemessages
+
 # Start the server
 echo "Starting server..."
 exec "$@"

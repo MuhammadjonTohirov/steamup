@@ -1,15 +1,19 @@
+# Step 1: Transitional model with both original and translated fields
 from django.db import models
-from parler.models import TranslatableModel, TranslatedFields
 from django.utils.translation import gettext_lazy as _
+from parler.models import TranslatableModel, TranslatedFields
 
-# Create your models here.
 
 class AppConfig(TranslatableModel):
-    translations = TranslatedFields(
-        value=models.CharField(_('Value'), max_length=255)
-    )
+    # Keep the original field temporarily during migration
+    value = models.CharField(max_length=255, null=True)
     key = models.CharField(_('Key'), max_length=50, unique=True)
-    
+
+    # Add translated fields with different names to avoid conflicts
+    translations = TranslatedFields(
+        value_translated=models.CharField(_('Value'), max_length=255)
+    )
+
     def __str__(self):
-        value = self.safe_translation_getter('value', any_language=True)
-        return f"{self.key}: {value}"
+        translated_value = self.safe_translation_getter('value_translated', any_language=True)
+        return f"{self.key}: {translated_value or self.value or ''}"

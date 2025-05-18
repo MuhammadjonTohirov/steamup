@@ -4,10 +4,11 @@ from rest_framework.routers import DefaultRouter
 from core.views.token_views import CustomTokenObtainPairView, CustomTokenRefreshView
 from users.views import LanguageView
 
-from users.views.AppConfigViewSet import AppConfigViewSet
+from core.views.AppConfigViewSet import AppConfigViewSet
+from users.views.AuthViewSet import AuthViewSet
 from users.views.OnboardingOptionsView import OnboardingOptionsView
-from users.views.views import (
-    AuthViewSet, UserProfileViewSet
+from users.views.UserProfileViewSet import (
+    UserProfileViewSet
 )
 
 # Create a router for ViewSets

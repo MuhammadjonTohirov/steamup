@@ -1,12 +1,12 @@
-from users.app_models.LearningDomain import LearningDomain
+from users.app_models.LearningMotivation import LearningMotivation
 from rest_framework import serializers
 from parler_rest.serializers import TranslatableModelSerializer, TranslatedFieldsField
 
-class LearningDomainSerializer(TranslatableModelSerializer):
-    translations = TranslatedFieldsField(shared_model=LearningDomain)
+class LearningMotivationSerializer(TranslatableModelSerializer):
+    translations = TranslatedFieldsField(shared_model=LearningMotivation)
     
     class Meta:
-        model = LearningDomain
+        model = LearningMotivation
         fields = ['id', 'icon', 'translations']
         
     def to_representation(self, instance):
@@ -20,13 +20,12 @@ class LearningDomainSerializer(TranslatableModelSerializer):
         # Simplify the translations format
         simplified_translations = {}
         for lang, trans in representation.get('translations', {}).items():
-            simplified_translations[lang] = trans.get('name_translated', '')
+            simplified_translations[lang] = trans.get('tr_title', '')
         
-        # remove 'translations' from the representation
         representation.pop('translations', None)
         
         # Add the name field with current language translation
         current_language = self.context.get('language', 'en')
-        representation['name'] = simplified_translations.get(current_language, '')
+        representation['title'] = simplified_translations.get(current_language, '')
                 
         return representation

@@ -3,9 +3,22 @@ from jsonschema import ValidationError
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError as DRFValidationError
 from django.contrib.auth import get_user_model
+from drf_spectacular.utils import extend_schema_serializer, OpenApiExample
 
 User = get_user_model()
 
+@extend_schema_serializer(
+    examples=[
+        OpenApiExample(
+            'Valid registration request',
+            value={
+                'email': 'user@example.com',
+                'password': 'securepass123',
+                'confirm_password': 'securepass123'
+            }
+        )
+    ]
+)
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, min_length=8, error_messages={
         'min_length': _('Password must be at least 8 characters long')

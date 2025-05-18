@@ -3,6 +3,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
 from parler.admin import TranslatableAdmin
 
+from users.app_models.LearningMotivation import LearningMotivation
 from users.app_models.UserProfile import UserProfile
 
 from users.app_models.LearningDomain import LearningDomain
@@ -41,7 +42,11 @@ class OTPCodeAdmin(admin.ModelAdmin):
 
 @admin.register(LearningDomain)
 class LearningDomainAdmin(TranslatableAdmin):
-    list_display = ('name', 'name_translated')    
+    list_display = ('name', 'name_translated')
+    
+@admin.register(LearningMotivation)    
+class LearningMotivationAdmin(TranslatableAdmin):
+    list_display = ('title', 'tr_title')
 
 @admin.register(UserProfile)
 class UserProfileAdmin(admin.ModelAdmin):
