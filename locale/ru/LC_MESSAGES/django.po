@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-18 12:50+0500\n"
+"POT-Creation-Date: 2025-05-18 16:25+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,12 +19,13 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
 "(n%100>=11 && n%100<=14)? 2 : 3);\n"
-#: core/models.py:9 users/app_models/AppConfig.py:14
-msgid "Value"
+
+#: core/models.py:10
+msgid "Key"
 msgstr ""
 
-#: core/models.py:11 users/app_models/AppConfig.py:10
-msgid "Key"
+#: core/models.py:14
+msgid "Value"
 msgstr ""
 
 #: core/utils/get_email_templates.py:16
@@ -106,11 +107,12 @@ msgstr ""
 msgid "Translated name"
 msgstr ""
 
-#: users/app_models/LearningDomain.py:26 users/app_models/LearningReason.py:16
+#: users/app_models/LearningDomain.py:26
+#: users/app_models/LearningMotivation.py:16
 msgid "Unnamed Domain"
 msgstr ""
 
-#: users/app_models/LearningReason.py:11
+#: users/app_models/LearningMotivation.py:11
 msgid "Translated title"
 msgstr ""
 
@@ -183,66 +185,42 @@ msgid "Advanced"
 msgstr ""
 
 #: users/app_models/UserProfile.py:28
-msgid "Fun"
-msgstr "Просто для развлечения"
-
-#: users/app_models/UserProfile.py:29
-msgid "Career"
-msgstr ""
-
-#: users/app_models/UserProfile.py:30
-msgid "Education"
-msgstr ""
-
-#: users/app_models/UserProfile.py:31
-msgid "Growth"
-msgstr ""
-
-#: users/app_models/UserProfile.py:32
-msgid "Society"
-msgstr ""
-
-#: users/app_models/UserProfile.py:37
 msgid "5 minutes"
 msgstr ""
 
-#: users/app_models/UserProfile.py:38
+#: users/app_models/UserProfile.py:29
 msgid "10 minutes"
 msgstr ""
 
-#: users/app_models/UserProfile.py:39
+#: users/app_models/UserProfile.py:30
 msgid "15 minutes"
 msgstr ""
 
-#: users/app_models/UserProfile.py:40
+#: users/app_models/UserProfile.py:31
 msgid "30 minutes"
 msgstr ""
 
-#: users/app_models/UserProfile.py:41
+#: users/app_models/UserProfile.py:32
 msgid "60 minutes"
 msgstr ""
 
-#: users/app_models/UserProfile.py:45
+#: users/app_models/UserProfile.py:36
 msgid "Full Name"
 msgstr ""
 
-#: users/app_models/UserProfile.py:46
+#: users/app_models/UserProfile.py:37
 msgid "Age"
 msgstr ""
 
-#: users/app_models/UserProfile.py:48
+#: users/app_models/UserProfile.py:39
 msgid "Discovery Source"
 msgstr ""
 
-#: users/app_models/UserProfile.py:49
+#: users/app_models/UserProfile.py:40
 msgid "STEM Level"
 msgstr ""
 
-#: users/app_models/UserProfile.py:50
-msgid "Motivation"
-msgstr ""
-
-#: users/app_models/UserProfile.py:51
+#: users/app_models/UserProfile.py:44
 msgid "Daily Goal"
 msgstr ""
 
@@ -266,30 +244,33 @@ msgstr ""
 msgid "Passwords do not match."
 msgstr ""
 
-#: users/serializers/UserRegistrationSerializer.py:11
+#: users/serializers/UserRegistrationSerializer.py:24
 msgid "Password must be at least 8 characters long"
 msgstr ""
 
-#: users/serializers/UserRegistrationSerializer.py:22
+#: users/serializers/UserRegistrationSerializer.py:35
 msgid "A user with this email already exists"
 msgstr ""
 
-#: users/serializers/UserRegistrationSerializer.py:23
+#: users/serializers/UserRegistrationSerializer.py:36
 msgid "Enter a valid email address"
 msgstr ""
 
-#: users/serializers/UserRegistrationSerializer.py:34
+#: users/serializers/UserRegistrationSerializer.py:47
 msgid "Passwords do not match"
 msgstr ""
 
-#: users/views/AuthViewSet.py:101
+#: users/views/AuthViewSet.py:114
 msgid "Email verified successfully."
 msgstr ""
 
-#: users/views/AuthViewSet.py:103
+#: users/views/AuthViewSet.py:116
 msgid "OTP verified successfully."
 msgstr ""
 
-#: users/views/AuthViewSet.py:136
+#: users/views/AuthViewSet.py:149
 msgid "Password reset successfully."
 msgstr ""
+
+#~ msgid "Fun"
+#~ msgstr "Просто для развлечения"
