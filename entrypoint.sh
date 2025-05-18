@@ -4,7 +4,7 @@
 set -e
 
 # Check for environment variables
-FLUSH_DATABASE=${FLUSH_DATABASE:-flase}
+FLUSH_DATABASE=${FLUSH_DATABASE:-true}
 RUN_MIGRATIONS=${RUN_MIGRATIONS:-true}
 export DB_HOST=${DB_HOST:-localhost}
 export DB_PORT=${DB_PORT:-5432}
