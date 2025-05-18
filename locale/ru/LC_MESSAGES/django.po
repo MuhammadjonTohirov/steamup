@@ -1,0 +1,295 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-05-18 12:50+0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
+"(n%100>=11 && n%100<=14)? 2 : 3);\n"
+#: core/models.py:9 users/app_models/AppConfig.py:14
+msgid "Value"
+msgstr ""
+
+#: core/models.py:11 users/app_models/AppConfig.py:10
+msgid "Key"
+msgstr ""
+
+#: core/utils/get_email_templates.py:16
+msgid "SteamUp - Your OTP for email verification"
+msgstr ""
+
+#: core/utils/get_email_templates.py:17
+#, python-brace-format
+msgid ""
+"\n"
+"        Hello,\n"
+"        \n"
+"        Your one-time password (OTP) for email verification is: {otp}\n"
+"        \n"
+"        This OTP will expire in 5 minutes.\n"
+"        \n"
+"        Best regards,\n"
+"        The SteamUp Team\n"
+"        "
+msgstr ""
+
+#: core/utils/get_email_templates.py:28
+msgid "SteamUp - Your OTP for password reset"
+msgstr ""
+
+#: core/utils/get_email_templates.py:29
+#, python-brace-format
+msgid ""
+"\n"
+"        Hello,\n"
+"        \n"
+"        Your one-time password (OTP) for password reset is: {otp}\n"
+"        \n"
+"        This OTP will expire in 5 minutes.\n"
+"        \n"
+"        Best regards,\n"
+"        The SteamUp Team\n"
+"        "
+msgstr ""
+
+#: core/validations/password_validation.py:21
+msgid "Password is too similar to your personal information."
+msgstr ""
+
+#: core/validations/password_validation.py:35
+#, python-format
+msgid "Password must be at least %(min_length)d characters long."
+msgstr ""
+
+#: core/validations/password_validation.py:49
+msgid "This password is too common and easily guessed."
+msgstr ""
+
+#: core/validations/password_validation.py:63
+msgid "Password cannot be entirely numeric."
+msgstr ""
+
+#: steamup_platform/settings.py:119
+msgid "English"
+msgstr ""
+
+#: steamup_platform/settings.py:120
+msgid "Uzbek"
+msgstr ""
+
+#: steamup_platform/settings.py:121
+msgid "Russian"
+msgstr ""
+
+#: users/admin.py:23
+msgid "Permissions"
+msgstr ""
+
+#: users/admin.py:26
+msgid "Important dates"
+msgstr ""
+
+#: users/app_models/LearningDomain.py:14
+msgid "Translated name"
+msgstr ""
+
+#: users/app_models/LearningDomain.py:26 users/app_models/LearningReason.py:16
+msgid "Unnamed Domain"
+msgstr ""
+
+#: users/app_models/LearningReason.py:11
+msgid "Translated title"
+msgstr ""
+
+#: users/app_models/OTPCode.py:10
+msgid "Verify"
+msgstr ""
+
+#: users/app_models/OTPCode.py:11
+msgid "Reset"
+msgstr ""
+
+#: users/app_models/OTPCode.py:15
+msgid "Code"
+msgstr ""
+
+#: users/app_models/OTPCode.py:16
+msgid "Purpose"
+msgstr ""
+
+#: users/app_models/OTPCode.py:17
+msgid "Is Used"
+msgstr ""
+
+#: users/app_models/OTPCode.py:18
+msgid "Created At"
+msgstr ""
+
+#: users/app_models/UserManager.py:8
+msgid "The Email field must be set"
+msgstr ""
+
+#: users/app_models/UserManager.py:22
+msgid "Superuser must have is_staff=True."
+msgstr ""
+
+#: users/app_models/UserManager.py:24
+msgid "Superuser must have is_superuser=True."
+msgstr ""
+
+#: users/app_models/UserProfile.py:12
+msgid "Google"
+msgstr ""
+
+#: users/app_models/UserProfile.py:13
+msgid "Facebook"
+msgstr ""
+
+#: users/app_models/UserProfile.py:14
+msgid "TikTok"
+msgstr ""
+
+#: users/app_models/UserProfile.py:15
+msgid "Play Store"
+msgstr ""
+
+#: users/app_models/UserProfile.py:16
+msgid "TV"
+msgstr ""
+
+#: users/app_models/UserProfile.py:21
+msgid "Beginner"
+msgstr ""
+
+#: users/app_models/UserProfile.py:22
+msgid "Intermediate"
+msgstr ""
+
+#: users/app_models/UserProfile.py:23
+msgid "Advanced"
+msgstr ""
+
+#: users/app_models/UserProfile.py:28
+msgid "Fun"
+msgstr "Просто для развлечения"
+
+#: users/app_models/UserProfile.py:29
+msgid "Career"
+msgstr ""
+
+#: users/app_models/UserProfile.py:30
+msgid "Education"
+msgstr ""
+
+#: users/app_models/UserProfile.py:31
+msgid "Growth"
+msgstr ""
+
+#: users/app_models/UserProfile.py:32
+msgid "Society"
+msgstr ""
+
+#: users/app_models/UserProfile.py:37
+msgid "5 minutes"
+msgstr ""
+
+#: users/app_models/UserProfile.py:38
+msgid "10 minutes"
+msgstr ""
+
+#: users/app_models/UserProfile.py:39
+msgid "15 minutes"
+msgstr ""
+
+#: users/app_models/UserProfile.py:40
+msgid "30 minutes"
+msgstr ""
+
+#: users/app_models/UserProfile.py:41
+msgid "60 minutes"
+msgstr ""
+
+#: users/app_models/UserProfile.py:45
+msgid "Full Name"
+msgstr ""
+
+#: users/app_models/UserProfile.py:46
+msgid "Age"
+msgstr ""
+
+#: users/app_models/UserProfile.py:48
+msgid "Discovery Source"
+msgstr ""
+
+#: users/app_models/UserProfile.py:49
+msgid "STEM Level"
+msgstr ""
+
+#: users/app_models/UserProfile.py:50
+msgid "Motivation"
+msgstr ""
+
+#: users/app_models/UserProfile.py:51
+msgid "Daily Goal"
+msgstr ""
+
+#: users/serializers/OTPSerializer.py:28 users/serializers/OTPSerializer.py:30
+#: users/serializers/OTPVerificationSerializer.py:25
+#: users/serializers/PasswordResetSerializer.py:30
+msgid "User with this email does not exist."
+msgstr ""
+
+#: users/serializers/OTPSerializer.py:44
+#, python-brace-format
+msgid "Please wait {seconds} seconds before requesting another OTP."
+msgstr ""
+
+#: users/serializers/OTPVerificationSerializer.py:37
+#: users/serializers/PasswordResetSerializer.py:42
+msgid "Invalid or expired OTP code."
+msgstr ""
+
+#: users/serializers/PasswordResetSerializer.py:25
+msgid "Passwords do not match."
+msgstr ""
+
+#: users/serializers/UserRegistrationSerializer.py:11
+msgid "Password must be at least 8 characters long"
+msgstr ""
+
+#: users/serializers/UserRegistrationSerializer.py:22
+msgid "A user with this email already exists"
+msgstr ""
+
+#: users/serializers/UserRegistrationSerializer.py:23
+msgid "Enter a valid email address"
+msgstr ""
+
+#: users/serializers/UserRegistrationSerializer.py:34
+msgid "Passwords do not match"
+msgstr ""
+
+#: users/views/AuthViewSet.py:101
+msgid "Email verified successfully."
+msgstr ""
+
+#: users/views/AuthViewSet.py:103
+msgid "OTP verified successfully."
+msgstr ""
+
+#: users/views/AuthViewSet.py:136
+msgid "Password reset successfully."
+msgstr ""

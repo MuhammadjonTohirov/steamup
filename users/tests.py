@@ -6,7 +6,13 @@ from datetime import timedelta
 from rest_framework.test import APITestCase
 from rest_framework import status
 
-from .models import OTPCode, LearningDomain, UserProfile, AppConfig
+from .models.OTPCode import OTPCode
+
+from .models.UserProfile import UserProfile
+
+from .models.LearningDomain import LearningDomain
+
+from .models.AppConfig import AppConfig
 
 from django.urls import reverse
 from django.utils import timezone
@@ -15,7 +21,7 @@ from datetime import timedelta
 from rest_framework.test import APITestCase
 from rest_framework import status
 
-from .models import OTPCode, LearningDomain, UserProfile, AppConfig
+from .models.AppConfig import AppConfig
 
 User = get_user_model()
 

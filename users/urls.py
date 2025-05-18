@@ -1,12 +1,14 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
-from core.token_views import CustomTokenObtainPairView, CustomTokenRefreshView
+from core.views.token_views import CustomTokenObtainPairView, CustomTokenRefreshView
+from users.views import LanguageView
 
-from .views import (
-    AuthViewSet, CustomTokenObtainPairView,
-    UserProfileViewSet, OnboardingOptionsView,
-    AppConfigViewSet
+from core.views.AppConfigViewSet import AppConfigViewSet
+from users.views.AuthViewSet import AuthViewSet
+from users.views.OnboardingOptionsView import OnboardingOptionsView
+from users.views.UserProfileViewSet import (
+    UserProfileViewSet
 )
 
 # Create a router for ViewSets
@@ -33,4 +35,8 @@ urlpatterns = [
     
     # Onboarding options
     path('onboarding/options/', OnboardingOptionsView.as_view(), name='onboarding_options'),
+    
+    # Language settings
+    # path('language/', LanguageView.as_view(), name='language'),
+
 ]
