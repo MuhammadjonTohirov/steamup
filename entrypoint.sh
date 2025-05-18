@@ -4,8 +4,10 @@
 set -e
 
 # Check for environment variables
-FLUSH_DATABASE=${FLUSH_DATABASE:-false}
+FLUSH_DATABASE=${FLUSH_DATABASE:-true}
 RUN_MIGRATIONS=${RUN_MIGRATIONS:-true}
+export DB_HOST=${DB_HOST:-localhost}
+export DB_PORT=${DB_PORT:-5432}
 
 # Wait for the database to be ready
 echo "Waiting for PostgreSQL..."
@@ -14,9 +16,18 @@ while ! nc -z $DB_HOST $DB_PORT; do
 done
 echo "PostgreSQL started"
 
+# Clear migrations if requested on users and core apps
+if [ "$FLUSH_DATABASE" = "true" ]; then
+  echo "Clearing migrations..."
+  find users/migrations -path users/migrations/__init__.py -prune -o -name "*.py" -exec rm -f {} \;
+  find core/migrations -path core/migrations/__init__.py -prune -o -name "*.py" -exec rm -f {} \;
+  echo "Migrations cleared"
+fi
+
 # Flush database if requested
 if [ "$FLUSH_DATABASE" = "true" ]; then
   echo "Flushing database..."
+  # Remove all migrations
   python manage.py flush --no-input
   echo "Database flushed"
 fi
@@ -24,6 +35,7 @@ fi
 # Apply database migrations if enabled
 if [ "$RUN_MIGRATIONS" = "true" ]; then
   echo "Applying database migrations..."
+  python manage.py makemigrations
   python manage.py migrate
 else
   echo "Skipping database migrations as per configuration"

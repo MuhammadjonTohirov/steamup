@@ -1,4 +1,5 @@
-from users.models import LearningDomain, UserProfile
+from users.app_models.LearningDomain import LearningDomain
+from users.app_models.UserProfile import UserProfile
 
 
 from rest_framework import serializers

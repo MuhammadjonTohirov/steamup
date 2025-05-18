@@ -51,8 +51,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'core.middlewares.StandardResponseMiddleware',  # Standard response middleware
-    'core.middlewares.LanguageMiddleware',  # Add Language middleware for API requests
+    'core.middlewares.StandardResponseMiddleware.StandardResponseMiddleware',  # Standard response middleware
+    'core.middlewares.LanguageMiddleware.LanguageMiddleware',  # Add Language middleware for API requests
 ]
 
 ROOT_URLCONF = 'steamup_platform.urls'
@@ -91,19 +91,19 @@ DATABASES = {
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'core.password_validation.UserAttributeSimilarityValidator',
+        'NAME': 'core.validations.password_validation.UserAttributeSimilarityValidator',
     },
     {
-        'NAME': 'core.password_validation.MinimumLengthValidator',
+        'NAME': 'core.validations.password_validation.MinimumLengthValidator',
         'OPTIONS': {
             'min_length': 8,
         }
     },
     {
-        'NAME': 'core.password_validation.CommonPasswordValidator',
+        'NAME': 'core.validations.password_validation.CommonPasswordValidator',
     },
     {
-        'NAME': 'core.password_validation.NumericPasswordValidator',
+        'NAME': 'core.validations.password_validation.NumericPasswordValidator',
     },
 ]
 

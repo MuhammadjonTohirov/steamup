@@ -1,8 +1,15 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
+from parler.admin import TranslatableAdmin
 
-from .models import User, OTPCode, LearningDomain, UserProfile
+from users.app_models.UserProfile import UserProfile
+
+from users.app_models.LearningDomain import LearningDomain
+
+from users.app_models.User import User
+
+from users.app_models.OTPCode import OTPCode
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
@@ -33,9 +40,8 @@ class OTPCodeAdmin(admin.ModelAdmin):
     ordering = ('-created_at',)
 
 @admin.register(LearningDomain)
-class LearningDomainAdmin(admin.ModelAdmin):
-    list_display = ('name',)
-    search_fields = ('name',)
+class LearningDomainAdmin(TranslatableAdmin):
+    list_display = ('name', 'name_translated')    
 
 @admin.register(UserProfile)
 class UserProfileAdmin(admin.ModelAdmin):

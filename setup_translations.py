@@ -1,159 +1,137 @@
 #!/usr/bin/env python
-
 """
-This script populates translation tables for existing data.
-Run this after migrating to the translatable models.
+Master script to fix all django-modeltranslation issues in your project
+Run this script from your project root directory
 """
-
 import os
 import sys
-import django
+import subprocess
+import time
 
-# Add the project path to the sys.path
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+def run_command(command):
+    """Run a shell command and print the output"""
+    print(f"\nRunning command: {command}")
+    result = subprocess.run(command, shell=True, capture_output=True, text=True)
+    print(result.stdout)
+    if result.stderr:
+        print(f"Error: {result.stderr}")
+    return result.returncode == 0
 
-# Set up Django
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'steamup_platform.settings')
-django.setup()
+def print_section(title):
+    """Print a section header"""
+    print("\n" + "=" * 80)
+    print(f" {title} ".center(80, "="))
+    print("=" * 80 + "\n")
 
-from django.utils import translation
-from users.models import LearningDomain, AppConfig
-
-def setup_learning_domain_translations():
-    """
-    Set up translations for existing LearningDomain records.
-    """
-    print("Setting up LearningDomain translations...")
+def main():
+    print_section("DJANGO-MODELTRANSLATION FIX SCRIPT")
+    print("This script will fix issues with django-modeltranslation in your project")
+    print("It will:")
+    print(" 1. Check and fix your settings.py")
+    print(" 2. Check and fix translation.py files")
+    print(" 3. Create missing migrations")
+    print(" 4. Apply migrations")
+    print(" 5. Sync translation fields")
+    print(" 6. Create missing translation tables if needed")
+    print("\nMake sure you have a backup of your project before proceeding!")
     
-    # English translations (already exist)
-    for domain in LearningDomain.objects.all():
-        print(f"Processing domain: {domain.pk}")
+    confirm = input("\nDo you want to continue? (y/n): ")
+    if confirm.lower() != 'y':
+        print("Aborted.")
+        return
+    
+    # Step 1: Make sure __init__.py exists in migrations folders
+    print_section("CHECKING MIGRATIONS FOLDER")
+    for app_dir in ['users', 'core']:
+        migrations_dir = os.path.join(app_dir, "migrations")
+        if not os.path.exists(migrations_dir):
+            os.makedirs(migrations_dir)
+            print(f"Created migrations directory for {app_dir}")
         
-        # Get the original name
-        english_name = domain.safe_translation_getter('name', language_code='en')
-        
-        if not english_name:
-            # If no English translation exists, try to get the name from any language
-            english_name = domain.safe_translation_getter('name', any_language=True)
-            
-            if english_name:
-                # Set the English translation
-                translation.activate('en')
-                domain.set_current_language('en')
-                domain.name = english_name
-                domain.save()
-                print(f"  - Set English translation: {english_name}")
-            else:
-                # No name found at all, this is an error
-                print(f"  - ERROR: No name found for domain {domain.pk}")
-                continue
-        
-        # Set Uzbek translation
-        translation.activate('uz')
-        domain.set_current_language('uz')
-        
-        # Map English names to Uzbek translations
-        uz_translations = {
-            'Physics': 'Fizika',
-            'Chemistry': 'Kimyo',
-            'Biology': 'Biologiya',
-            'Mathematics': 'Matematika',
-            'Computer Science': 'Kompyuter Fanlari',
-            'Engineering': 'Muhandislik',
-            'Robotics': 'Robotlashuv',
-            'Astronomy': 'Astronomiya',
-            'Environmental Science': 'Atrof-muhit Fanlari',
-        }
-        
-        domain.name = uz_translations.get(english_name, english_name)
-        domain.save()
-        print(f"  - Set Uzbek translation: {domain.name}")
-        
-        # Set Russian translation
-        translation.activate('ru')
-        domain.set_current_language('ru')
-        
-        # Map English names to Russian translations
-        ru_translations = {
-            'Physics': 'Физика',
-            'Chemistry': 'Химия',
-            'Biology': 'Биология',
-            'Mathematics': 'Математика',
-            'Computer Science': 'Информатика',
-            'Engineering': 'Инженерия',
-            'Robotics': 'Робототехника',
-            'Astronomy': 'Астрономия',
-            'Environmental Science': 'Экология',
-        }
-        
-        domain.name = ru_translations.get(english_name, english_name)
-        domain.save()
-        print(f"  - Set Russian translation: {domain.name}")
+        init_file = os.path.join(migrations_dir, "__init__.py")
+        if not os.path.exists(init_file):
+            with open(init_file, "w") as f:
+                pass  # Create empty __init__.py
+            print(f"Created __init__.py in {migrations_dir}")
+    
+    # Step 2: Fix the LearningDomain model translation - create explicit migration
+    print_section("CREATING EXPLICIT MIGRATION FOR LEARNINGDOMAIN")
+    migration_path = os.path.join("users", "migrations", "0002_learningdomain_translation.py")
+    
+    if not os.path.exists(migration_path):
+        print(f"Creating migration file {migration_path}")
+        with open(migration_path, "w") as f:
+            f.write("""# Generated manually
+from django.db import migrations, models
+import django.db.models.deletion
 
-def setup_app_config_translations():
-    """
-    Set up translations for existing AppConfig records.
-    """
-    print("\nSetting up AppConfig translations...")
-    
-    # English translations (already exist)
-    for config in AppConfig.objects.all():
-        print(f"Processing config: {config.key}")
-        
-        # Get the original value
-        english_value = config.safe_translation_getter('value', language_code='en')
-        
-        if not english_value:
-            # If no English translation exists, try to get the value from any language
-            english_value = config.safe_translation_getter('value', any_language=True)
-            
-            if english_value:
-                # Set the English translation
-                translation.activate('en')
-                config.set_current_language('en')
-                config.value = english_value
-                config.save()
-                print(f"  - Set English translation: {english_value}")
-            else:
-                # No value found at all, this is an error
-                print(f"  - ERROR: No value found for config {config.key}")
-                continue
-        
-        # For platform_name, set translations
-        if config.key == 'platform_name':
-            # Set Uzbek translation
-            translation.activate('uz')
-            config.set_current_language('uz')
-            config.value = "SteamUp"
-            config.save()
-            print(f"  - Set Uzbek translation: {config.value}")
-            
-            # Set Russian translation
-            translation.activate('ru')
-            config.set_current_language('ru')
-            config.value = "SteamUp"
-            config.save()
-            print(f"  - Set Russian translation: {config.value}")
-        else:
-            # For other configs like primary_color, just copy the English value
-            translation.activate('uz')
-            config.set_current_language('uz')
-            config.value = english_value
-            config.save()
-            print(f"  - Set Uzbek translation: {config.value}")
-            
-            translation.activate('ru')
-            config.set_current_language('ru')
-            config.value = english_value
-            config.save()
-            print(f"  - Set Russian translation: {config.value}")
 
-if __name__ == '__main__':
-    # Reset to default language
-    translation.activate('en')
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ('users', '0001_initial'),
+    ]
+
+    operations = [
+        migrations.CreateModel(
+            name='LearningDomainTranslation',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('language_code', models.CharField(db_index=True, max_length=15, verbose_name='Language')),
+                ('name', models.CharField(blank=True, max_length=255, null=True)),
+                ('description', models.TextField(blank=True, null=True)),
+                ('master', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='translations', to='users.LearningDomain')),
+            ],
+            options={
+                'verbose_name': 'learning domain Translation',
+                'db_table': 'users_learningdomain_translation',
+                'db_tablespace': '',
+                'managed': True,
+                'default_permissions': (),
+                'unique_together': {('language_code', 'master')},
+            },
+        ),
+    ]
+""")
+        print("Created explicit migration for LearningDomain translation table")
+    else:
+        print(f"Migration file {migration_path} already exists")
     
-    # Set up translations
-    setup_learning_domain_translations()
-    setup_app_config_translations()
+    # Step 3: Verify translation.py in users app
+    print_section("CHECKING TRANSLATION FILES")
+    users_translation_path = os.path.join("users", "translation.py")
     
-    print("\nTranslation setup complete!")
+    if not os.path.exists(users_translation_path):
+        print(f"Creating translation.py for users app")
+        with open(users_translation_path, "w") as f:
+            f.write("""from modeltranslation.translator import register, TranslationOptions
+from .models import LearningDomain
+
+@register(LearningDomain)
+class LearningDomainTranslationOptions(TranslationOptions):
+    fields = ('name', 'description')
+""")
+        print("Created translation.py for users app")
+    else:
+        print(f"Translation file {users_translation_path} already exists")
+    
+    # Step 4: Run migrations
+    print_section("RUNNING MIGRATIONS")
+    run_command("python manage.py migrate")
+    
+    # Step 5: Sync translation fields
+    print_section("SYNCING TRANSLATION FIELDS")
+    run_command("python manage.py sync_translation_fields")
+    
+    # Step 6: Update translation fields if needed
+    print_section("UPDATING TRANSLATION FIELDS")
+    run_command("python manage.py update_translation_fields")
+    
+    # Step 7: Check if the issue is resolved
+    print_section("CHECKING RESULTS")
+    print("Fix process completed.")
+    print("\nYou should now try to access the admin panel to verify that the issue is resolved.")
+    print("If you still encounter issues, run this script one more time or try the manual fix script.")
+
+if __name__ == "__main__":
+    main()

@@ -3,21 +3,16 @@ from django.utils.translation import gettext_lazy as _
 
 from rest_framework import viewsets, status, permissions
 from rest_framework.decorators import action
-from rest_framework.views import APIView
 
 from drf_spectacular.utils import extend_schema
 
-from core.models import AppConfig
 from core.response import APIResponse
-from core.serializers.AppConfigSerializer import AppConfigSerializer
 from ..serializers.OTPSerializer import OTPSerializer
 from ..serializers.OTPVerificationSerializer import OTPVerificationSerializer
 from ..serializers.PasswordResetSerializer import PasswordResetSerializer
-from ..serializers.LearningDomainSerializer import LearningDomainSerializer
 from ..serializers.UserProfileSerializer import UserProfileSerializer
 from ..serializers.CustomTokenObtainPairSerializer import CustomTokenObtainPairSerializer
-from users.serializers import OnboardingOptionsSerializer
-from ..models import UserProfile, LearningDomain
+from users.app_models.UserProfile import UserProfile
 
 User = get_user_model()
 
@@ -142,59 +137,3 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save()
 
-class OnboardingOptionsView(APIView):
-    # permission_classes = [permissions.AllowAny]
-    
-    def get(self, request):
-        # Prepare options for dropdowns
-        discovery_sources = [
-            {'value': choice[0], 'label': str(choice[1])} 
-            for choice in UserProfile.DISCOVERY_SOURCES
-        ]
-        
-        stem_levels = [
-            {'value': choice[0], 'label': str(choice[1])} 
-            for choice in UserProfile.STEM_LEVEL_CHOICES
-        ]
-        
-        motivations = [
-            {'value': choice[0], 'label': str(choice[1])} 
-            for choice in UserProfile.MOTIVATION_CHOICES
-        ]
-        
-        daily_goals = [
-            {'value': choice[0], 'label': str(choice[1])} 
-            for choice in UserProfile.DAILY_GOAL_CHOICES
-        ]
-        
-        learning_domains = LearningDomain.objects.all()
-        learning_domains_serializer = LearningDomainSerializer(learning_domains, many=True, context={'request': request})
-        
-        data = {
-            'discovery_sources': discovery_sources,
-            'stem_levels': stem_levels,
-            'motivations': motivations,
-            'daily_goals': daily_goals,
-            'learning_domains': learning_domains_serializer.data
-        }
-        
-        serializer = OnboardingOptionsSerializer(data)
-        return APIResponse(data=serializer.data)
-
-class AppConfigViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = AppConfig.objects.all()
-    serializer_class = AppConfigSerializer
-    permission_classes = [permissions.AllowAny]
-    
-    @action(detail=False, methods=['get'])
-    def theme(self, request):
-        # Get primary color and platform name
-        primary_color = AppConfig.objects.filter(key='primary_color').first()
-        platform_name = AppConfig.objects.filter(key='platform_name').first()
-        
-        data = {
-            'primary_color': primary_color.safe_translation_getter('value', any_language=True) if primary_color else '#12D18E',
-            'platform_name': platform_name.safe_translation_getter('value', any_language=True) if platform_name else 'SteamUp'
-        }
-        
-        return APIResponse(data=data)
