@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-18 16:25+0500\n"
+"POT-Creation-Date: 2025-05-18 18:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -95,25 +95,61 @@ msgstr ""
 msgid "Russian"
 msgstr ""
 
-#: users/admin.py:23
+#: users/admin.py:24
 msgid "Permissions"
 msgstr ""
 
-#: users/admin.py:26
+#: users/admin.py:27
 msgid "Important dates"
 msgstr ""
 
-#: users/app_models/LearningDomain.py:14
+#: users/app_models/LearningDomain.py:11
 msgid "Translated name"
 msgstr ""
 
-#: users/app_models/LearningDomain.py:26
+#: users/app_models/LearningDomain.py:16
 #: users/app_models/LearningMotivation.py:16
 msgid "Unnamed Domain"
 msgstr ""
 
 #: users/app_models/LearningMotivation.py:11
 msgid "Translated title"
+msgstr ""
+
+#: users/app_models/LearningPeriodTarget.py:7
+msgid "Day"
+msgstr ""
+
+#: users/app_models/LearningPeriodTarget.py:8
+msgid "Week"
+msgstr ""
+
+#: users/app_models/LearningPeriodTarget.py:9
+msgid "Month"
+msgstr ""
+
+#: users/app_models/LearningPeriodTarget.py:10
+msgid "Year"
+msgstr ""
+
+#: users/app_models/LearningPeriodTarget.py:14
+msgid "Period Value"
+msgstr ""
+
+#: users/app_models/LearningPeriodTarget.py:15
+msgid "Period Unit"
+msgstr ""
+
+#: users/app_models/LearningPeriodTarget.py:16
+msgid "Great, Awesome, etc"
+msgstr ""
+
+#: users/app_models/LearningPeriodTarget.py:19
+msgid "Translated complement"
+msgstr ""
+
+#: users/app_models/LearningPeriodTarget.py:26
+msgid "Unnamed Target"
 msgstr ""
 
 #: users/app_models/OTPCode.py:10
@@ -152,76 +188,12 @@ msgstr ""
 msgid "Superuser must have is_superuser=True."
 msgstr ""
 
-#: users/app_models/UserProfile.py:12
-msgid "Google"
-msgstr ""
-
-#: users/app_models/UserProfile.py:13
-msgid "Facebook"
-msgstr ""
-
-#: users/app_models/UserProfile.py:14
-msgid "TikTok"
-msgstr ""
-
-#: users/app_models/UserProfile.py:15
-msgid "Play Store"
-msgstr ""
-
-#: users/app_models/UserProfile.py:16
-msgid "TV"
-msgstr ""
-
-#: users/app_models/UserProfile.py:21
-msgid "Beginner"
-msgstr ""
-
-#: users/app_models/UserProfile.py:22
-msgid "Intermediate"
-msgstr ""
-
-#: users/app_models/UserProfile.py:23
-msgid "Advanced"
-msgstr ""
-
-#: users/app_models/UserProfile.py:28
-msgid "5 minutes"
-msgstr ""
-
-#: users/app_models/UserProfile.py:29
-msgid "10 minutes"
-msgstr ""
-
-#: users/app_models/UserProfile.py:30
-msgid "15 minutes"
-msgstr ""
-
-#: users/app_models/UserProfile.py:31
-msgid "30 minutes"
-msgstr ""
-
-#: users/app_models/UserProfile.py:32
-msgid "60 minutes"
-msgstr ""
-
-#: users/app_models/UserProfile.py:36
+#: users/app_models/UserProfile.py:11
 msgid "Full Name"
 msgstr ""
 
-#: users/app_models/UserProfile.py:37
+#: users/app_models/UserProfile.py:12
 msgid "Age"
-msgstr ""
-
-#: users/app_models/UserProfile.py:39
-msgid "Discovery Source"
-msgstr ""
-
-#: users/app_models/UserProfile.py:40
-msgid "STEM Level"
-msgstr ""
-
-#: users/app_models/UserProfile.py:44
-msgid "Daily Goal"
 msgstr ""
 
 #: users/serializers/OTPSerializer.py:28 users/serializers/OTPSerializer.py:30
@@ -258,6 +230,22 @@ msgstr ""
 
 #: users/serializers/UserRegistrationSerializer.py:47
 msgid "Passwords do not match"
+msgstr ""
+
+#: users/serializers/onboarding/LearningPeriodTargetSerializer.py:15
+msgid "day"
+msgstr ""
+
+#: users/serializers/onboarding/LearningPeriodTargetSerializer.py:17
+msgid "week"
+msgstr ""
+
+#: users/serializers/onboarding/LearningPeriodTargetSerializer.py:19
+msgid "month"
+msgstr ""
+
+#: users/serializers/onboarding/LearningPeriodTargetSerializer.py:21
+msgid "year"
 msgstr ""
 
 #: users/views/AuthViewSet.py:114
