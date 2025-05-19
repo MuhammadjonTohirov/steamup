@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-18 18:26+0000\n"
+"POT-Creation-Date: 2025-05-19 14:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -101,96 +101,95 @@ msgstr ""
 msgid "Important dates"
 msgstr ""
 
-#: users/app_models/LearningDomain.py:11
+#: users/models/LearningDomain.py:11
 msgid "Translated name"
 msgstr ""
 
-#: users/app_models/LearningDomain.py:16
-#: users/app_models/LearningMotivation.py:16
+#: users/models/LearningDomain.py:16 users/models/LearningMotivation.py:16
 msgid "Unnamed Domain"
 msgstr ""
 
-#: users/app_models/LearningMotivation.py:11
+#: users/models/LearningMotivation.py:11
 msgid "Translated title"
 msgstr ""
 
-#: users/app_models/LearningPeriodTarget.py:7
+#: users/models/LearningPeriodTarget.py:7
 msgid "Day"
 msgstr ""
 
-#: users/app_models/LearningPeriodTarget.py:8
+#: users/models/LearningPeriodTarget.py:8
 msgid "Week"
 msgstr ""
 
-#: users/app_models/LearningPeriodTarget.py:9
+#: users/models/LearningPeriodTarget.py:9
 msgid "Month"
 msgstr ""
 
-#: users/app_models/LearningPeriodTarget.py:10
+#: users/models/LearningPeriodTarget.py:10
 msgid "Year"
 msgstr ""
 
-#: users/app_models/LearningPeriodTarget.py:14
+#: users/models/LearningPeriodTarget.py:14
 msgid "Period Value"
 msgstr ""
 
-#: users/app_models/LearningPeriodTarget.py:15
+#: users/models/LearningPeriodTarget.py:15
 msgid "Period Unit"
 msgstr ""
 
-#: users/app_models/LearningPeriodTarget.py:16
+#: users/models/LearningPeriodTarget.py:16
 msgid "Great, Awesome, etc"
 msgstr ""
 
-#: users/app_models/LearningPeriodTarget.py:19
+#: users/models/LearningPeriodTarget.py:19
 msgid "Translated complement"
 msgstr ""
 
-#: users/app_models/LearningPeriodTarget.py:26
+#: users/models/LearningPeriodTarget.py:26
 msgid "Unnamed Target"
 msgstr ""
 
-#: users/app_models/OTPCode.py:10
+#: users/models/OTPCode.py:10
 msgid "Verify"
 msgstr ""
 
-#: users/app_models/OTPCode.py:11
+#: users/models/OTPCode.py:11
 msgid "Reset"
 msgstr ""
 
-#: users/app_models/OTPCode.py:15
+#: users/models/OTPCode.py:15
 msgid "Code"
 msgstr ""
 
-#: users/app_models/OTPCode.py:16
+#: users/models/OTPCode.py:16
 msgid "Purpose"
 msgstr ""
 
-#: users/app_models/OTPCode.py:17
+#: users/models/OTPCode.py:17
 msgid "Is Used"
 msgstr ""
 
-#: users/app_models/OTPCode.py:18
+#: users/models/OTPCode.py:18
 msgid "Created At"
 msgstr ""
 
-#: users/app_models/UserManager.py:8
+#: users/models/UserManager.py:8
 msgid "The Email field must be set"
 msgstr ""
 
-#: users/app_models/UserManager.py:22
+#: users/models/UserManager.py:22
 msgid "Superuser must have is_staff=True."
 msgstr ""
 
-#: users/app_models/UserManager.py:24
+#: users/models/UserManager.py:24
 msgid "Superuser must have is_superuser=True."
 msgstr ""
 
-#: users/app_models/UserProfile.py:11
+#: users/models/UserProfile.py:11
 msgid "Full Name"
 msgstr ""
 
-#: users/app_models/UserProfile.py:12
+#: users/models/UserProfile.py:12
 msgid "Age"
 msgstr ""
 
