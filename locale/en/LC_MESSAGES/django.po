@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-19 14:10+0000\n"
+"POT-Creation-Date: 2025-05-19 21:00+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -193,6 +193,10 @@ msgstr ""
 msgid "Age"
 msgstr ""
 
+#: users/serializers/CustomTokenObtainPairSerializer.py:22
+msgid "Email not verified. Please verify your email before logging in."
+msgstr ""
+
 #: users/serializers/OTPSerializer.py:28 users/serializers/OTPSerializer.py:30
 #: users/serializers/OTPVerificationSerializer.py:25
 #: users/serializers/PasswordResetSerializer.py:30
@@ -213,19 +217,48 @@ msgstr ""
 msgid "Passwords do not match."
 msgstr ""
 
-#: users/serializers/UserRegistrationSerializer.py:24
+#: users/serializers/UserRegistrationSerializer.py:37
+#: users/serializers/UserRegistrationSerializer.py:39
 msgid "Password must be at least 8 characters long"
 msgstr ""
 
-#: users/serializers/UserRegistrationSerializer.py:35
+#: users/serializers/UserRegistrationSerializer.py:44
+msgid "Must match the password exactly"
+msgstr ""
+
+#: users/serializers/UserRegistrationSerializer.py:48
+msgid "User's full name"
+msgstr ""
+
+#: users/serializers/UserRegistrationSerializer.py:51
+msgid "User's age"
+msgstr ""
+
+#: users/serializers/UserRegistrationSerializer.py:56
+msgid "List of learning domain IDs the user is interested in"
+msgstr ""
+
+#: users/serializers/UserRegistrationSerializer.py:60
+msgid "ID of the selected learning motivation"
+msgstr ""
+
+#: users/serializers/UserRegistrationSerializer.py:64
+msgid "ID of the selected daily learning goal"
+msgstr ""
+
+#: users/serializers/UserRegistrationSerializer.py:73
+msgid "A valid, unique email address"
+msgstr ""
+
+#: users/serializers/UserRegistrationSerializer.py:75
 msgid "A user with this email already exists"
 msgstr ""
 
-#: users/serializers/UserRegistrationSerializer.py:36
+#: users/serializers/UserRegistrationSerializer.py:76
 msgid "Enter a valid email address"
 msgstr ""
 
-#: users/serializers/UserRegistrationSerializer.py:47
+#: users/serializers/UserRegistrationSerializer.py:86
 msgid "Passwords do not match"
 msgstr ""
 
@@ -245,15 +278,19 @@ msgstr ""
 msgid "year"
 msgstr ""
 
-#: users/views/AuthViewSet.py:114
+#: users/views/AuthViewSet.py:43
+msgid "Registration successful. Please verify your email."
+msgstr ""
+
+#: users/views/AuthViewSet.py:107
 msgid "Email verified successfully."
 msgstr ""
 
-#: users/views/AuthViewSet.py:116
+#: users/views/AuthViewSet.py:109
 msgid "OTP verified successfully."
 msgstr ""
 
-#: users/views/AuthViewSet.py:149
+#: users/views/AuthViewSet.py:142
 msgid "Password reset successfully."
 msgstr ""
 

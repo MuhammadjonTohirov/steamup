@@ -5,7 +5,7 @@ from core.views.token_views import CustomTokenObtainPairView, CustomTokenRefresh
 from users.views import LanguageView
 
 from core.views.AppConfigViewSet import AppConfigViewSet
-from users.views.AuthViewSet import AuthViewSet
+from users.views.AuthViewSet import ForgotPasswordView, RegisterView, OTPRequestView, OTPVerificationView, PasswordResetView, VerifyResetOTPView
 from users.views.OnboardingOptionsView import OnboardingOptionsView
 from users.views.UserProfileViewSet import (
     UserProfileViewSet
@@ -26,12 +26,12 @@ urlpatterns = [
     path('auth/token/refresh/', CustomTokenRefreshView.as_view(), name='token_refresh'),
     
     # Auth ViewSet actions
-    path('auth/register/', AuthViewSet.as_view({'post': 'register'}), name='register'),
-    path('auth/request-otp/', AuthViewSet.as_view({'post': 'request_otp'}), name='request_otp'),
-    path('auth/verify-otp/', AuthViewSet.as_view({'post': 'verify_otp'}), name='verify_otp'),
-    path('auth/forgot-password/', AuthViewSet.as_view({'post': 'forgot_password'}), name='forgot_password'),
-    path('auth/verify-reset-otp/', AuthViewSet.as_view({'post': 'verify_reset_otp'}), name='verify_reset_otp'),
-    path('auth/reset-password/', AuthViewSet.as_view({'post': 'reset_password'}), name='reset_password'),
+    path('auth/register/', RegisterView.as_view(), name='register'),
+    path('auth/request-otp/', OTPRequestView.as_view(), name='request_otp'),
+    path('auth/verify-otp/', OTPVerificationView.as_view(), name='verify_otp'),
+    path('auth/forgot-password/', ForgotPasswordView.as_view(), name='forgot_password'),
+    path('auth/verify-reset-otp/', VerifyResetOTPView.as_view(), name='verify_reset_otp'),
+    path('auth/reset-password/', PasswordResetView.as_view(), name='reset_password'),
     
     # Onboarding options
     path('onboarding/options/', OnboardingOptionsView.as_view(), name='onboarding_options'),

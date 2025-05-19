@@ -1,21 +1,20 @@
+# users/views/auth/RegisterView.py
+from email.message import EmailMessage
+from django.conf import settings
+from rest_framework.views import APIView
+from rest_framework import status, permissions
+from drf_spectacular.utils import extend_schema, OpenApiResponse
 from core.response import APIResponse
-from users.serializers import UserRegistrationSerializer
+from core.utils.get_email_templates import get_email_templates
+from users.serializers.UserRegistrationSerializer import UserRegistrationSerializer
 from users.serializers.CustomTokenObtainPairSerializer import CustomTokenObtainPairSerializer
 from users.serializers.OTPSerializer import OTPSerializer
 from users.serializers.OTPVerificationSerializer import OTPVerificationSerializer
 from users.serializers.PasswordResetSerializer import PasswordResetSerializer
 
-from rest_framework.throttling import AnonRateThrottle
-from django.utils.translation import gettext as _, gettext_lazy as _
-from drf_spectacular.utils import extend_schema, OpenApiResponse
-from rest_framework import permissions, status, viewsets
-from rest_framework.decorators import action
-from core.response import APIResponse
+class RegisterView(APIView):
+    permission_classes = [permissions.AllowAny]
 
-
-class AuthViewSet(viewsets.GenericViewSet):
-    throttle_classes = [AnonRateThrottle]
-    
     @extend_schema(
         description="Register a new user",
         request=UserRegistrationSerializer,
@@ -28,11 +27,9 @@ class AuthViewSet(viewsets.GenericViewSet):
                 description="Validation error"
             )
         },
-        methods=['POST'],
-        tags=['Authentication']
+        tags=['auth']
     )
-    @action(detail=False, methods=['post'], permission_classes=[permissions.AllowAny])
-    def register(self, request):
+    def post(self, request):
         serializer = UserRegistrationSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
@@ -53,29 +50,21 @@ class AuthViewSet(viewsets.GenericViewSet):
             )
         return APIResponse(error=serializer.errors, code=status.HTTP_400_BAD_REQUEST)
     
+class OTPRequestView(APIView):
+    permission_classes = [permissions.AllowAny]
+    
     @extend_schema(
         request=OTPSerializer,
         responses={200: {'message': 'string'}}
     )
-    @action(detail=False, methods=['post'], permission_classes=[permissions.AllowAny])
-    def request_otp(self, request):
+    def post(self, request):
         serializer = OTPSerializer(data=request.data)
         if serializer.is_valid():
             otp = serializer.save()
             
-            # Send email with OTP
-            purpose_text = "email verification" if otp.purpose == "verify" else "password reset"
-            email_subject = f"SteamUp - Your OTP for {purpose_text}"
-            email_body = f"""
-            Hello,
-            
-            Your one-time password (OTP) for {purpose_text} is: {otp.code}
-            
-            This OTP will expire in 5 minutes.
-            
-            Best regards,
-            The SteamUp Team
-            """
+            # Get email templates with translations
+            purpose = otp.purpose
+            email_subject, email_body = get_email_templates(purpose, otp.code)
             
             try:
                 email = EmailMessage(
@@ -91,12 +80,14 @@ class AuthViewSet(viewsets.GenericViewSet):
         
         return APIResponse(error=serializer.errors, code=status.HTTP_400_BAD_REQUEST)
 
+class OTPVerificationView(APIView):
+    permission_classes = [permissions.AllowAny]
+    
     @extend_schema(
         request=OTPVerificationSerializer,
         responses={200: {'message': 'string'}}
     )
-    @action(detail=False, methods=['post'], permission_classes=[permissions.AllowAny])
-    def verify_otp(self, request):
+    def post(self, request):
         serializer = OTPVerificationSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.validated_data['user']
@@ -117,32 +108,40 @@ class AuthViewSet(viewsets.GenericViewSet):
 
         return APIResponse(error=serializer.errors, code=status.HTTP_400_BAD_REQUEST)
 
+class VerifyResetOTPView(APIView):
+    permission_classes = [permissions.AllowAny]
+    
     @extend_schema(
-        request=OTPSerializer,
+        request={"application/json": {"email": "string", "code": "string"}},
         responses={200: {'message': 'string'}}
     )
-    @action(detail=False, methods=['post'], permission_classes=[permissions.AllowAny])
-    def forgot_password(self, request):
-        # Reuse the request_otp endpoint with purpose=reset
+    def post(self, request):
+        # Add reset purpose to request data
         request.data['purpose'] = 'reset'
-        return self.request_otp(request)
+        # Delegate to OTPVerificationView
+        return OTPVerificationView().post(request)
 
+class ForgotPasswordView(APIView):
+    permission_classes = [permissions.AllowAny]
+    
     @extend_schema(
-        request=OTPVerificationSerializer,
+        request={"application/json": {"email": "string"}},
         responses={200: {'message': 'string'}}
     )
-    @action(detail=False, methods=['post'], permission_classes=[permissions.AllowAny])
-    def verify_reset_otp(self, request):
-        # Reuse the verify_otp endpoint with purpose=reset
+    def post(self, request):
+        # Add reset purpose to request data
         request.data['purpose'] = 'reset'
-        return self.verify_otp(request)
+        # Delegate to OTPRequestView
+        return OTPRequestView().post(request)
 
+class PasswordResetView(APIView):
+    permission_classes = [permissions.AllowAny]
+    
     @extend_schema(
         request=PasswordResetSerializer,
         responses={200: {'message': 'string'}}
     )
-    @action(detail=False, methods=['post'], permission_classes=[permissions.AllowAny])
-    def reset_password(self, request):
+    def post(self, request):
         serializer = PasswordResetSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()

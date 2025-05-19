@@ -16,8 +16,12 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         try:
             data = super().validate(attrs)
 
-            # Add custom claims
+            # Check if user is verified
             user = self.user
+            if not user.is_verified:
+                raise ValidationError(_("Email not verified. Please verify your email before logging in."))
+                
+            # Add custom claims
             data['user_id'] = str(user.id)
             data['email'] = user.email
             data['is_verified'] = user.is_verified
