@@ -1,5 +1,5 @@
 from core.response import APIResponse
-from users.app_models.UserProfile import UserProfile
+from users.models.UserProfile import UserProfile
 from users.serializers.UserProfileSerializer import UserProfileSerializer
 from rest_framework import permissions, status, viewsets
 from drf_spectacular.utils import extend_schema, extend_schema_view

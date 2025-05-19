@@ -1,4 +1,4 @@
-from users.app_models.User import User
+from users.models.User import User
 
 
 from django.db import models

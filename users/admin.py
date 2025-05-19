@@ -3,15 +3,15 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
 from parler.admin import TranslatableAdmin
 
-from users.app_models.LearningPeriodTarget import LearningPeriodTarget
-from users.app_models.LearningMotivation import LearningMotivation
-from users.app_models.UserProfile import UserProfile
+from users.models.LearningPeriodTarget import LearningPeriodTarget
+from users.models.LearningMotivation import LearningMotivation
+from users.models.UserProfile import UserProfile
 
-from users.app_models.LearningDomain import LearningDomain
+from users.models.LearningDomain import LearningDomain
 
-from users.app_models.User import User
+from users.models.User import User
 
-from users.app_models.OTPCode import OTPCode
+from users.models.OTPCode import OTPCode
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):

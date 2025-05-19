@@ -1,5 +1,5 @@
 from modeltranslation.translator import register, TranslationOptions
-from users.app_models.LearningDomain import LearningDomain
+from users.models.LearningDomain import LearningDomain
 
 @register(LearningDomain)
 class LearningDomainTranslationOptions(TranslationOptions):

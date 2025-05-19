@@ -1,4 +1,4 @@
-from users.app_models.LearningMotivation import LearningMotivation
+from users.models.LearningMotivation import LearningMotivation
 from rest_framework import serializers
 from parler_rest.serializers import TranslatableModelSerializer, TranslatedFieldsField
 

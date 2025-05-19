@@ -1,4 +1,4 @@
-from users.app_models.LearningDomain import LearningDomain
+from users.models.LearningDomain import LearningDomain
 from rest_framework import serializers
 from parler_rest.serializers import TranslatableModelSerializer, TranslatedFieldsField
 
