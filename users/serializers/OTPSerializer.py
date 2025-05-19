@@ -5,7 +5,7 @@ from rest_framework import serializers
 import random
 from datetime import timedelta
 
-from users.app_models.OTPCode import OTPCode
+from users.models.OTPCode import OTPCode
 from django.contrib.auth import get_user_model
 
 User = get_user_model()

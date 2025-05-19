@@ -1,4 +1,4 @@
-from users.app_models.LearningPeriodTarget import LearningPeriodTarget
+from users.models.LearningPeriodTarget import LearningPeriodTarget
 from rest_framework import serializers
 from parler_rest.serializers import TranslatableModelSerializer, TranslatedFieldsField
 from django.utils.translation import gettext_lazy as _

@@ -1,7 +1,7 @@
-from users.app_models.LearningPeriodTarget import LearningPeriodTarget
-from users.app_models.LearningDomain import LearningDomain
-from users.app_models.LearningMotivation import LearningMotivation
-from users.app_models.UserProfile import UserProfile
+from users.models.LearningPeriodTarget import LearningPeriodTarget
+from users.models.LearningDomain import LearningDomain
+from users.models.LearningMotivation import LearningMotivation
+from users.models.UserProfile import UserProfile
 
 
 from rest_framework import serializers

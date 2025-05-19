@@ -1,5 +1,5 @@
-from users.app_models.LearningDomain import LearningDomain
-from users.app_models.User import User
+from users.models.LearningDomain import LearningDomain
+from users.models.User import User
 
 
 from django.db import models

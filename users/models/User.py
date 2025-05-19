@@ -1,4 +1,4 @@
-from users.app_models.UserManager import UserManager
+from users.models.UserManager import UserManager
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 from django.utils import timezone
