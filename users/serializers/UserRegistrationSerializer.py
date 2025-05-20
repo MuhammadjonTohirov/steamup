@@ -119,13 +119,16 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             return user
         except Exception as e:
             # Raise a simple string error
-            raise DRFValidationError(str(e))
+            raise ValidationError(str(e))
             
     def to_representation(self, instance):
         """
         Customize the response to include basic profile information
         """
-        representation = super().to_representation(instance)
+        representation = {
+            'id': str(instance.id),
+            'email': instance.email,
+        }
         
         # Add profile data if available
         if hasattr(instance, 'profile'):

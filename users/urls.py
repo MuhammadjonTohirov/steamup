@@ -5,7 +5,7 @@ from core.views.token_views import CustomTokenObtainPairView, CustomTokenRefresh
 from users.views import LanguageView
 
 from core.views.AppConfigViewSet import AppConfigViewSet
-from users.views.AuthViewSet import ForgotPasswordView, RegisterView, OTPRequestView, OTPVerificationView, PasswordResetView, VerifyResetOTPView
+from users.views.AuthViewSet import ForgotPasswordView, HasProfileView, RegisterView, OTPRequestView, OTPVerificationView, PasswordResetView, VerifyResetOTPView
 from users.views.OnboardingOptionsView import OnboardingOptionsView
 from users.views.UserProfileViewSet import (
     UserProfileViewSet
@@ -32,6 +32,8 @@ urlpatterns = [
     path('auth/forgot-password/', ForgotPasswordView.as_view(), name='forgot_password'),
     path('auth/verify-reset-otp/', VerifyResetOTPView.as_view(), name='verify_reset_otp'),
     path('auth/reset-password/', PasswordResetView.as_view(), name='reset_password'),
+    # auth/has-profile/
+    path('auth/has-profile/', HasProfileView.as_view(), name='has_profile'),
     
     # Onboarding options
     path('onboarding/options/', OnboardingOptionsView.as_view(), name='onboarding_options'),

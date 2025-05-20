@@ -1,16 +1,21 @@
 # users/views/auth/RegisterView.py
-from email.message import EmailMessage
+from django.core.mail import EmailMessage
 from django.conf import settings
 from rest_framework.views import APIView
 from rest_framework import status, permissions
 from drf_spectacular.utils import extend_schema, OpenApiResponse
 from core.response import APIResponse
 from core.utils.get_email_templates import get_email_templates
+from users.serializers.HasProfileSerializer import HasProfileSerializer
 from users.serializers.UserRegistrationSerializer import UserRegistrationSerializer
 from users.serializers.CustomTokenObtainPairSerializer import CustomTokenObtainPairSerializer
 from users.serializers.OTPSerializer import OTPSerializer
 from users.serializers.OTPVerificationSerializer import OTPVerificationSerializer
 from users.serializers.PasswordResetSerializer import PasswordResetSerializer
+from django.utils.translation import gettext_lazy as _
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class RegisterView(APIView):
     permission_classes = [permissions.AllowAny]
@@ -44,7 +49,7 @@ class RegisterView(APIView):
             return APIResponse(
                 data={
                     'user': serializer.data,
-                    'token': token_serializer.validated_data
+                    'creds': token_serializer.validated_data
                 },
                 code=status.HTTP_201_CREATED
             )
@@ -61,8 +66,6 @@ class OTPRequestView(APIView):
         serializer = OTPSerializer(data=request.data)
         if serializer.is_valid():
             otp = serializer.save()
-            
-            # Get email templates with translations
             purpose = otp.purpose
             email_subject, email_body = get_email_templates(purpose, otp.code)
             
@@ -133,6 +136,30 @@ class ForgotPasswordView(APIView):
         request.data['purpose'] = 'reset'
         # Delegate to OTPRequestView
         return OTPRequestView().post(request)
+
+# method to check profile exists or not
+class HasProfileView(APIView):
+    permission_classes = [permissions.AllowAny]
+    
+    @extend_schema(
+        request=HasProfileSerializer,
+        responses={
+            200: OpenApiResponse(
+                response=HasProfileSerializer.ResponseSerializer,
+                description="User profile exists"
+            ),
+        }
+    )
+    def post(self, request):
+        email = request.data.get('email')
+        if not email:
+            return APIResponse(error="Email is required", code=status.HTTP_400_BAD_REQUEST)
+        
+        user = User.objects.filter(email=email).first()
+        if not user:
+            return APIResponse(error="User does not exist", code=status.HTTP_404_NOT_FOUND)
+        
+        return APIResponse(data={"message": _("User exists.")})
 
 class PasswordResetView(APIView):
     permission_classes = [permissions.AllowAny]

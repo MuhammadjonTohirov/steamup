@@ -1,7 +1,7 @@
 from jsonschema import ValidationError
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-
+from django.utils.translation import gettext as _  
 
 from datetime import timedelta
 
@@ -18,16 +18,19 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
             # Check if user is verified
             user = self.user
-            if not user.is_verified:
-                raise ValidationError(_("Email not verified. Please verify your email before logging in."))
                 
             # Add custom claims
             data['user_id'] = str(user.id)
             data['email'] = user.email
             data['is_verified'] = user.is_verified
+            
+            if not user.is_verified:
+                # pop the refresh token if user is not verified
+                data.pop('refresh', None)
+                data.pop('access', None)
 
             # Adjust token lifetime based on remember_me flag
-            if remember_me:
+            if remember_me and user.is_verified:
                 refresh = self.get_token(user)
                 refresh.set_exp(lifetime=timedelta(days=30))
                 data['refresh'] = str(refresh)
