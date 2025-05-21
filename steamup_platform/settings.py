@@ -161,7 +161,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
         # 'rest_framework.permissions.IsAuthenticated',
     ],
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_SCHEMA_CLASS': 'core.schema.StandardResponseAutoSchema',
     'EXCEPTION_HANDLER': 'core.exceptions.custom_exception_handler',
     'DEFAULT_PARSER_CLASSES': [
         'rest_framework.parsers.JSONParser',
@@ -246,4 +246,29 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'API for SteamUp Platform',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
+    
+    'COMPONENT_SPLIT_REQUEST': True,
+    'SCHEMA_PATH_PREFIX': '/api/',
+    'SWAGGER_UI_SETTINGS': {
+        'deepLinking': True,
+        'persistAuthorization': True,
+        'displayOperationId': True,
+    },
+    
+    'APPEND_COMPONENTS': {
+        "schemas": {
+            "StandardResponse": {
+                "type": "object",
+                "properties": {
+                    "data": {"type": "object", "nullable": True},
+                    "error": {"type": "string", "nullable": True},
+                    "code": {"type": "integer"}
+                },
+                "required": ["code"]
+            }
+        }
+    },
+    
+    'DEFAULT_RESPONSE_CLASS': 'core.schema.StandardResponseSerializer',
 }
+

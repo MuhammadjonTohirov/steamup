@@ -38,4 +38,4 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
             return data
         except Exception as e:
             # Convert any exception to a simple string error
-            raise ValidationError(str(e))
+            raise Exception(str(e))

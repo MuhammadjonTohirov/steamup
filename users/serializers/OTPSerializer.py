@@ -1,6 +1,5 @@
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
-from jsonschema import ValidationError
 from rest_framework import serializers
 import random
 from datetime import timedelta
@@ -10,7 +9,7 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-class OTPSerializer(serializers.ModelSerializer):
+class OTPSerializer(serializers.Serializer):
     email = serializers.EmailField(write_only=True)
 
     class Meta:
@@ -24,10 +23,11 @@ class OTPSerializer(serializers.ModelSerializer):
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
-            if purpose == 'verify':
-                raise ValidationError(_("User with this email does not exist."))
-            else:
-                raise ValidationError(_("User with this email does not exist."))
+            # Using non-dict error format
+            raise serializers.ValidationError(
+                _("User with this email does not exist."),
+                code='user_not_found'
+            )
 
         # Check for throttling (no OTP within 60 seconds)
         recent_otp = OTPCode.objects.filter(
@@ -40,13 +40,14 @@ class OTPSerializer(serializers.ModelSerializer):
         if recent_otp:
             time_passed = timezone.now() - recent_otp.created_at
             time_left = 60 - time_passed.seconds
-            raise ValidationError(
-                _("Please wait {seconds} seconds before requesting another OTP.").format(seconds=time_left)
+            raise serializers.ValidationError(
+                _("Please wait {seconds} seconds before requesting another OTP.").format(seconds=time_left),
+                code='throttled'
             )
 
         attrs['user'] = user
         return attrs
-
+    
     def create(self, validated_data):
         user = validated_data.get('user')
         purpose = validated_data.get('purpose')

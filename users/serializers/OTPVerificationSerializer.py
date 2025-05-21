@@ -22,7 +22,7 @@ class OTPVerificationSerializer(serializers.Serializer):
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
-            raise ValidationError(_("User with this email does not exist."))
+            raise serializers.ValidationError(_("User with this email does not exist."))
 
         # Check for valid OTP
         otp = OTPCode.objects.filter(
@@ -34,7 +34,11 @@ class OTPVerificationSerializer(serializers.Serializer):
         ).first()
 
         if not otp:
-            raise ValidationError(_("Invalid or expired OTP code."))
+            raise Exception(_("Invalid or expired OTP code."))
+        elif otp.is_used:
+            raise Exception(_("This OTP code has already been used."))
+        elif otp.purpose != purpose:
+            raise Exception(_("This OTP code is not valid for the requested purpose."))
 
         attrs['user'] = user
         attrs['otp'] = otp

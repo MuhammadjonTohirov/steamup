@@ -5,7 +5,9 @@ from rest_framework.views import APIView
 from rest_framework import status, permissions
 from drf_spectacular.utils import extend_schema, OpenApiResponse
 from core.response import APIResponse
+from core.schema import get_standard_response_schema
 from core.utils.get_email_templates import get_email_templates
+from core.utils.swagger_helper import api_schema
 from users.serializers.HasProfileSerializer import HasProfileSerializer
 from users.serializers.UserRegistrationSerializer import UserRegistrationSerializer
 from users.serializers.CustomTokenObtainPairSerializer import CustomTokenObtainPairSerializer
@@ -14,25 +16,34 @@ from users.serializers.OTPVerificationSerializer import OTPVerificationSerialize
 from users.serializers.PasswordResetSerializer import PasswordResetSerializer
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
+from drf_spectacular.utils import extend_schema_serializer, OpenApiExample
 
 User = get_user_model()
 
 class RegisterView(APIView):
     permission_classes = [permissions.AllowAny]
 
-    @extend_schema(
+    @api_schema(
         description="Register a new user",
         request=UserRegistrationSerializer,
-        responses={
-            201: OpenApiResponse(
-                response=UserRegistrationSerializer,
-                description="User successfully registered"
-            ),
-            400: OpenApiResponse(
-                description="Validation error"
-            )
+        status_code=201,
+        success_data={
+            "user": {
+                "id": "550e8400-e29b-41d4-a716-446655440000",
+                "email": "user@example.com",
+                "full_name": "John Doe",
+                "age": 25,
+                "interests": [1, 3, 5],
+                "motivation": 2,
+                "daily_goal": 3
+            },
+            "creds": {
+                "user_id": "550e8400-e29b-41d4-a716-446655440000",
+                "email": "user@example.com",
+                "is_verified": False
+            }
         },
-        tags=['auth']
+        tags=["auth"]
     )
     def post(self, request):
         serializer = UserRegistrationSerializer(data=request.data)
@@ -58,9 +69,12 @@ class RegisterView(APIView):
 class OTPRequestView(APIView):
     permission_classes = [permissions.AllowAny]
     
-    @extend_schema(
+    @api_schema(
         request=OTPSerializer,
-        responses={200: {'message': 'string'}}
+        success_data={
+            "message": "OTP sent to user@example.com"
+        },
+        tags=["auth"],
     )
     def post(self, request):
         serializer = OTPSerializer(data=request.data)
@@ -81,14 +95,17 @@ class OTPRequestView(APIView):
             except Exception as e:
                 return APIResponse(error=str(e), code=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-        return APIResponse(error=serializer.errors, code=status.HTTP_400_BAD_REQUEST)
+        return APIResponse(error='User not found', code=status.HTTP_400_BAD_REQUEST)
 
 class OTPVerificationView(APIView):
     permission_classes = [permissions.AllowAny]
     
-    @extend_schema(
+    @api_schema(
         request=OTPVerificationSerializer,
-        responses={200: {'message': 'string'}}
+        success_data={
+            "message": "OTP verified successfully"
+        },
+        tags=["auth"],
     )
     def post(self, request):
         serializer = OTPVerificationSerializer(data=request.data)
@@ -114,9 +131,10 @@ class OTPVerificationView(APIView):
 class VerifyResetOTPView(APIView):
     permission_classes = [permissions.AllowAny]
     
-    @extend_schema(
-        request={"application/json": {"email": "string", "code": "string"}},
-        responses={200: {'message': 'string'}}
+    @api_schema(
+        request=OTPVerificationSerializer,
+        success_data={"email": "string", "code": "string"},
+        tags=["auth"],
     )
     def post(self, request):
         # Add reset purpose to request data
@@ -127,9 +145,10 @@ class VerifyResetOTPView(APIView):
 class ForgotPasswordView(APIView):
     permission_classes = [permissions.AllowAny]
     
-    @extend_schema(
-        request={"application/json": {"email": "string"}},
-        responses={200: {'message': 'string'}}
+    @api_schema(
+        request=OTPSerializer,
+        success_data={"email": "string"},
+        tags=["auth"],
     )
     def post(self, request):
         # Add reset purpose to request data
@@ -141,14 +160,9 @@ class ForgotPasswordView(APIView):
 class HasProfileView(APIView):
     permission_classes = [permissions.AllowAny]
     
-    @extend_schema(
+    @api_schema(
         request=HasProfileSerializer,
-        responses={
-            200: OpenApiResponse(
-                response=HasProfileSerializer.ResponseSerializer,
-                description="User profile exists"
-            ),
-        }
+        success_data={"exists": "boolean"},
     )
     def post(self, request):
         email = request.data.get('email')
@@ -157,16 +171,16 @@ class HasProfileView(APIView):
         
         user = User.objects.filter(email=email).first()
         if not user:
-            return APIResponse(error="User does not exist", code=status.HTTP_404_NOT_FOUND)
+            return APIResponse(data={"exists": False})
         
-        return APIResponse(data={"message": _("User exists.")})
+        return APIResponse(data={"exists": True})
 
 class PasswordResetView(APIView):
     permission_classes = [permissions.AllowAny]
     
-    @extend_schema(
+    @api_schema(
         request=PasswordResetSerializer,
-        responses={200: {'message': 'string'}}
+        success_data={'message': 'string'}
     )
     def post(self, request):
         serializer = PasswordResetSerializer(data=request.data)

@@ -8,10 +8,4 @@ User = get_user_model()
 class HasProfileSerializer(serializers.Serializer):
     email = serializers.EmailField()
 
-    class ResponseSerializer(serializers.Serializer):
-        class HasProfileResponseDataSerializer(serializers.Serializer):
-            has_profile = serializers.BooleanField()
-            
-        data = HasProfileResponseDataSerializer()
-
     

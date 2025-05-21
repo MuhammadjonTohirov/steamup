@@ -12,25 +12,6 @@ from users.models.UserProfile import UserProfile
 
 User = get_user_model()
 
-@extend_schema_serializer(
-    examples=[
-        OpenApiExample(
-            'Valid registration request',
-            value={
-                'email': 'user@example.com',
-                'password': 'securepass123',
-                'confirm_password': 'securepass123',
-                'full_name': 'John Doe',
-                'age': 25,
-                'interests': [1, 3, 5],  # IDs of learning domains
-                'motivation': 2,         # ID of learning motivation
-                'daily_goal': 3          # ID of learning period target
-            },
-            description='A complete user registration request with profile information'
-        )
-    ],
-    many=False
-)
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
         write_only=True, 
@@ -84,7 +65,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         confirm_password = attrs.pop('confirm_password', '')
         
         if password != confirm_password:
-            raise ValidationError(_("Passwords do not match"))
+            raise Exception(_("Passwords do not match"))
         
         return attrs
     
@@ -119,7 +100,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             return user
         except Exception as e:
             # Raise a simple string error
-            raise ValidationError(str(e))
+            raise Exception(str(e))
             
     def to_representation(self, instance):
         """
