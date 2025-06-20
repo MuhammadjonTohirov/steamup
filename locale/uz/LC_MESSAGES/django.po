@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-19 21:00+0500\n"
+"POT-Creation-Date: 2025-06-20 14:17+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -193,11 +193,7 @@ msgstr ""
 msgid "Age"
 msgstr ""
 
-#: users/serializers/CustomTokenObtainPairSerializer.py:22
-msgid "Email not verified. Please verify your email before logging in."
-msgstr ""
-
-#: users/serializers/OTPSerializer.py:28 users/serializers/OTPSerializer.py:30
+#: users/serializers/OTPSerializer.py:28
 #: users/serializers/OTPVerificationSerializer.py:25
 #: users/serializers/PasswordResetSerializer.py:30
 msgid "User with this email does not exist."
@@ -213,52 +209,60 @@ msgstr ""
 msgid "Invalid or expired OTP code."
 msgstr ""
 
+#: users/serializers/OTPVerificationSerializer.py:39
+msgid "This OTP code has already been used."
+msgstr ""
+
+#: users/serializers/OTPVerificationSerializer.py:41
+msgid "This OTP code is not valid for the requested purpose."
+msgstr ""
+
 #: users/serializers/PasswordResetSerializer.py:25
 msgid "Passwords do not match."
 msgstr ""
 
-#: users/serializers/UserRegistrationSerializer.py:37
-#: users/serializers/UserRegistrationSerializer.py:39
+#: users/serializers/UserRegistrationSerializer.py:19
+#: users/serializers/UserRegistrationSerializer.py:21
 msgid "Password must be at least 8 characters long"
 msgstr ""
 
-#: users/serializers/UserRegistrationSerializer.py:44
+#: users/serializers/UserRegistrationSerializer.py:26
 msgid "Must match the password exactly"
 msgstr ""
 
-#: users/serializers/UserRegistrationSerializer.py:48
+#: users/serializers/UserRegistrationSerializer.py:30
 msgid "User's full name"
 msgstr ""
 
-#: users/serializers/UserRegistrationSerializer.py:51
+#: users/serializers/UserRegistrationSerializer.py:33
 msgid "User's age"
 msgstr ""
 
-#: users/serializers/UserRegistrationSerializer.py:56
+#: users/serializers/UserRegistrationSerializer.py:38
 msgid "List of learning domain IDs the user is interested in"
 msgstr ""
 
-#: users/serializers/UserRegistrationSerializer.py:60
+#: users/serializers/UserRegistrationSerializer.py:42
 msgid "ID of the selected learning motivation"
 msgstr ""
 
-#: users/serializers/UserRegistrationSerializer.py:64
+#: users/serializers/UserRegistrationSerializer.py:46
 msgid "ID of the selected daily learning goal"
 msgstr ""
 
-#: users/serializers/UserRegistrationSerializer.py:73
+#: users/serializers/UserRegistrationSerializer.py:55
 msgid "A valid, unique email address"
 msgstr ""
 
-#: users/serializers/UserRegistrationSerializer.py:75
+#: users/serializers/UserRegistrationSerializer.py:57
 msgid "A user with this email already exists"
 msgstr ""
 
-#: users/serializers/UserRegistrationSerializer.py:76
+#: users/serializers/UserRegistrationSerializer.py:58
 msgid "Enter a valid email address"
 msgstr ""
 
-#: users/serializers/UserRegistrationSerializer.py:86
+#: users/serializers/UserRegistrationSerializer.py:68
 msgid "Passwords do not match"
 msgstr ""
 
@@ -278,19 +282,15 @@ msgstr ""
 msgid "year"
 msgstr ""
 
-#: users/views/AuthViewSet.py:43
-msgid "Registration successful. Please verify your email."
-msgstr ""
-
-#: users/views/AuthViewSet.py:107
+#: users/views/AuthViewSet.py:125
 msgid "Email verified successfully."
 msgstr ""
 
-#: users/views/AuthViewSet.py:109
+#: users/views/AuthViewSet.py:127
 msgid "OTP verified successfully."
 msgstr ""
 
-#: users/views/AuthViewSet.py:142
+#: users/views/AuthViewSet.py:189
 msgid "Password reset successfully."
 msgstr ""
 

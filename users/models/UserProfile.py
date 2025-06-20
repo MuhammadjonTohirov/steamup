@@ -11,10 +11,10 @@ class UserProfile(models.Model):
     full_name = models.CharField(_('Full Name'), max_length=100)
     age = models.IntegerField(_('Age'))
     interests = models.ManyToManyField(LearningDomain, related_name='users')
-    motivation = models.OneToOneField(
+    motivation = models.ForeignKey(
         'users.LearningMotivation', related_name='user_motivation', on_delete=models.CASCADE, null=True, blank=True
     )
-    daily_goal = models.OneToOneField(
+    daily_goal = models.ForeignKey(
         'users.LearningPeriodTarget', related_name='user_daily_goal', on_delete=models.CASCADE, null=True, blank=True
     )
     def __str__(self):

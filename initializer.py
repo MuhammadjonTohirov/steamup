@@ -60,54 +60,6 @@ def initialize_learning_domains():
                 'uz': 'Kompyuter fanlari',
                 'ru': 'Информатика'
             }
-        },
-        {
-            'title': 'Robotics',
-            'translations': {
-                'en': 'Robotics',
-                'uz': 'Robototexnika',
-                'ru': 'Робототехника'
-            }
-        },
-        {
-            'title': 'Astronomy',
-            'translations': {
-                'en': 'Astronomy',
-                'uz': 'Astronomiya',
-                'ru': 'Астрономия'
-            }
-        },
-        {
-            'title': 'Environmental Science',
-            'translations': {
-                'en': 'Environmental Science',
-                'uz': 'Ekologiya',
-                'ru': 'Экология'
-            }
-        },
-        {
-            'title': 'Physics',
-            'translations': {
-                'en': 'Physics',
-                'uz': 'Fizika',
-                'ru': 'Физика'
-            }
-        },
-        {
-            'title': 'Chemistry',
-            'translations': {
-                'en': 'Chemistry',
-                'uz': 'Kimyo',
-                'ru': 'Химия'
-            }
-        },
-        {
-            'title': 'Biology',
-            'translations': {
-                'en': 'Biology',
-                'uz': 'Biologiya',
-                'ru': 'Биология'
-            }
         }
     ]
     
@@ -243,36 +195,6 @@ def initialize_learning_period_targets():
                 'en': 'Ambitious achiever',
                 'uz': 'Shuhratparast yutuqqa erishuvchi',
                 'ru': 'Амбициозный ученик'
-            }
-        },
-        {
-            'period_unit': 'weekly',
-            'repeat_count': 3,
-            'complement': 'Weekend warrior',
-            'translations': {
-                'en': 'Weekend warrior',
-                'uz': 'Dam olish kunlari o\'rganuvchi',
-                'ru': 'Выходной воин'
-            }
-        },
-        {
-            'period_unit': 'weekly',
-            'repeat_count': 5,
-            'complement': 'Steady progress',
-            'translations': {
-                'en': 'Steady progress',
-                'uz': 'Barqaror progress',
-                'ru': 'Стабильный прогресс'
-            }
-        },
-        {
-            'period_unit': 'monthly',
-            'repeat_count': 15,
-            'complement': 'Monthly milestone',
-            'translations': {
-                'en': 'Monthly milestone',
-                'uz': 'Oylik maqsad',
-                'ru': 'Ежемесячная цель'
             }
         }
     ]
