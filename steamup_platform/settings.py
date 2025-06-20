@@ -5,8 +5,11 @@ Django settings for steamup_platform project.
 import os
 from datetime import timedelta
 from pathlib import Path
+import certifi
 from decouple import config
 from django.utils.translation import gettext_lazy as _
+
+os.environ['SSL_CERT_FILE'] = certifi.where()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -15,7 +18,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = ['*']  # Configure appropriately for production
 
@@ -185,60 +188,19 @@ SIMPLE_JWT = {
     'USER_ID_CLAIM': 'user_id',
 }
 
-# Email configuration
-if DEBUG:
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-else:
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-    EMAIL_HOST = config('smtp.gmail.com')
-    EMAIL_PORT = config('587', cast=int)
-    EMAIL_HOST_USER = config('tokhirov.mukhammadjon@gmail.com')
-    EMAIL_HOST_PASSWORD = config('jdwn yotq wgal hnjo')
-    EMAIL_USE_TLS = config('True', cast=bool)
-
-# API Documentation
-SPECTACULAR_SETTINGS = {
-    'TITLE': 'SteamUp API',
-    'DESCRIPTION': 'API for SteamUp Platform',
-    'VERSION': '1.0.0',
-    'SERVE_INCLUDE_SCHEMA': False,
-    
-    # Add these settings for better schema generation
-    'COMPONENT_SPLIT_REQUEST': True,
-    'SCHEMA_PATH_PREFIX': '/api/',
-    'SWAGGER_UI_SETTINGS': {
-        'deepLinking': True,
-        'persistAuthorization': True,
-        'displayOperationId': True,
-    },
-    # Exclude problematic serializers or views if needed
-    'EXCLUDE_PATH_REGEX': [],
-}
-
-# CORS settings
-CORS_ALLOW_ALL_ORIGINS = True  # In production, specify exact origins
-CORS_ALLOW_CREDENTIALS = True
-
-# JWT settings
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-    'ROTATE_REFRESH_TOKENS': False,
-    'UPDATE_LAST_LOGIN': True,
-    'USER_ID_FIELD': 'id',
-    'USER_ID_CLAIM': 'user_id',
-}
 
 # Email configuration
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-    EMAIL_HOST = config('smtp.gmail.com')
-    EMAIL_PORT = config('587', cast=int)
-    EMAIL_HOST_USER = config('tokhirov.mukhammadjon@gmail.com')
-    EMAIL_HOST_PASSWORD = config('jdwn yotq wgal hnjo')
-    EMAIL_USE_TLS = config('True', cast=bool)
+    EMAIL_HOST = 'smtp.gmail.com'
+    EMAIL_PORT = 587
+    EMAIL_HOST_USER = 'tokhirov.mukhammadjon@gmail.com'
+    EMAIL_HOST_PASSWORD = 'jdwn yotq wgal hnjo'
+    EMAIL_USE_TLS = True
+    EMAIL_USE_SSL = False
+    EMAIL_TIMEOUT = 60
 
 # API Documentation
 SPECTACULAR_SETTINGS = {

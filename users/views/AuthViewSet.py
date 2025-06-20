@@ -95,7 +95,7 @@ class OTPRequestView(APIView):
             except Exception as e:
                 return APIResponse(error=str(e), code=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-        return APIResponse(error='User not found', code=status.HTTP_400_BAD_REQUEST)
+        return APIResponse(error=serializer.errors, code=status.HTTP_400_BAD_REQUEST)
 
 class OTPVerificationView(APIView):
     permission_classes = [permissions.AllowAny]

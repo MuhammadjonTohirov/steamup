@@ -11,10 +11,12 @@ User = get_user_model()
 
 class OTPSerializer(serializers.Serializer):
     email = serializers.EmailField(write_only=True)
-
+    purpose = serializers.ChoiceField(choices=OTPCode.PURPOSE_CHOICES, write_only=True, help_text=_("Purpose of the OTP request, e.g., 'Verify', 'Reset'."))
+    
     class Meta:
         model = OTPCode
         fields = ['email', 'purpose']
+        
 
     def validate(self, attrs):
         email = attrs.pop('email')
@@ -51,8 +53,13 @@ class OTPSerializer(serializers.Serializer):
     def create(self, validated_data):
         user = validated_data.get('user')
         purpose = validated_data.get('purpose')
-        # Generate a 6-digit OTP
-        otp_code = ''.join([str(random.randint(0, 9)) for _ in range(6)])
+        
+        # Generate OTP - static for DEBUG mode, random for production
+        from django.conf import settings
+        if settings.DEBUG:
+            otp_code = '123123'
+        else:
+            otp_code = ''.join([str(random.randint(0, 9)) for _ in range(6)])
 
         # Create the OTP record
         otp = OTPCode.objects.create(
